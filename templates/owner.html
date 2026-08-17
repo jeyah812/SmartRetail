@@ -1,0 +1,602 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="owner-dashboard">
+
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <!-- =====================================================
+                 SIDEBAR
+            ====================================================== -->
+
+            <div class="col-lg-2 sidebar">
+
+                <h3 class="sidebar-logo">
+                    <i class="bi bi-shop"></i>
+                    SmartRetail
+                </h3>
+
+                <ul class="sidebar-menu">
+
+                    <li>
+                        <a href="{{ url_for('owner') }}">
+                            <i class="bi bi-grid-fill"></i>
+                            Dashboard
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="bi bi-bar-chart-line-fill"></i>
+                            Analytics
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ url_for('prediction') }}">
+                            <i class="bi bi-graph-up-arrow"></i>
+                            Prediction
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="bi bi-lightbulb-fill"></i>
+                            Recommendations
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="bi bi-people-fill"></i>
+                            Customers
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="bi bi-gear-fill"></i>
+                            Settings
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <!-- =====================================================
+                 DASHBOARD CONTENT
+            ====================================================== -->
+
+            <div class="col-lg-10 dashboard-content">
+
+
+                <!-- =================================================
+                     HEADER
+                ================================================== -->
+
+                <div class="dashboard-header">
+
+                    <div>
+
+                        <h2 class="dashboard-title">
+                            Dashboard Overview
+                        </h2>
+
+                        <p class="dashboard-subtitle">
+                            Welcome back! Here's your business summary.
+                        </p>
+
+                    </div>
+
+
+                    <div class="dashboard-actions">
+
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            class="search-box"
+                        >
+
+                        <button class="icon-btn">
+                            <i class="bi bi-bell-fill"></i>
+                        </button>
+
+                        <button class="profile-btn">
+                            <i class="bi bi-person-circle"></i>
+                            Owner
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     KPI CARDS
+                ================================================== -->
+
+                <div class="row mt-4">
+
+
+                    <!-- TOTAL SALES -->
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <div class="dashboard-card">
+
+                            <div class="card-top">
+
+                                <div>
+
+                                    <h6>
+                                        Total Sales
+                                    </h6>
+
+                                    <h2>
+                                        ${{ "{:,.2f}".format(
+                                            stats.total_sales
+                                        ) }}
+                                    </h2>
+
+                                </div>
+
+                                <div class="card-icon">
+
+                                    <i class="bi bi-currency-dollar"></i>
+
+                                </div>
+
+                            </div>
+
+                            <span class="trend-up">
+                                Dataset Loaded Successfully
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- TOTAL PROFIT -->
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <div class="dashboard-card">
+
+                            <h6>
+                                Total Profit
+                            </h6>
+
+                            <h2>
+                                ${{ "{:,.2f}".format(
+                                    stats.total_profit
+                                ) }}
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- TOTAL RECORDS -->
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <div class="dashboard-card">
+
+                            <h6>
+                                Total Records
+                            </h6>
+
+                            <h2>
+                                {{ stats.total_orders }}
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ML ACCURACY -->
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <div class="dashboard-card">
+
+                            <h6>
+                                ML Accuracy
+                            </h6>
+
+                            <h2>
+                                96%
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     DYNAMIC DATA VISUALIZATIONS
+                ================================================== -->
+
+                <div class="row mt-4">
+
+                    {% if charts %}
+
+                        {% for chart in charts %}
+
+                            <div class="col-lg-8 mb-4">
+
+                                <div class="dashboard-card">
+
+                                    <h4 class="mb-4">
+                                        📊 {{ chart.title }}
+                                    </h4>
+
+                                    <div class="chart-container">
+
+                                        <img
+                                            src="{{ url_for(
+                                                'static',
+                                                filename='images/' + chart.image
+                                            ) }}"
+                                            class="dashboard-chart img-fluid rounded"
+                                            alt="{{ chart.title }}"
+                                        >
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <div class="col-12">
+
+                            <div class="dashboard-card text-center p-5">
+
+                                <h4>
+                                    📊 No Analysis Available
+                                </h4>
+
+                                <p class="text-secondary mt-3">
+                                    Upload a dataset from the Prediction
+                                    page to generate dashboard analytics.
+                                </p>
+
+                                <a
+                                    href="{{ url_for('prediction') }}"
+                                    class="btn btn-gradient mt-3"
+                                >
+                                    📂 Upload Dataset
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- =================================================
+                         QUICK INSIGHTS
+                    ================================================== -->
+
+                    <div class="col-lg-4 mb-4">
+
+                        <div class="dashboard-card">
+
+                            <h4>
+                                💡 Quick Insights
+                            </h4>
+
+                            <ul class="insight-list">
+
+                                <li>
+                                    📈 Dataset analyzed successfully
+                                </li>
+
+                                <li>
+                                    💰 Profit information available
+                                </li>
+
+                                <li>
+                                    🤖 Random Forest selected
+                                </li>
+
+                                <li>
+                                    📊 Dynamic charts generated
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     DATASET INFORMATION
+                ================================================== -->
+
+                <div class="row mt-2">
+
+                    <div class="col-12">
+
+                        <div class="dashboard-card">
+
+                            <h4>
+                                📋 Dataset Analysis
+                            </h4>
+
+                            <p class="text-secondary mt-3">
+                                The uploaded dataset has been analyzed
+                                automatically. Visualizations are selected
+                                according to the available date, numeric,
+                                and categorical columns.
+                            </p>
+
+                            <div class="row mt-4">
+
+                                <div class="col-md-4">
+
+                                    <div class="recommend-box">
+
+                                        <h5>
+                                            📅 Date Analysis
+                                        </h5>
+
+                                        <p>
+                                            Time-based trends are generated
+                                            automatically when date information
+                                            is available.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="col-md-4">
+
+                                    <div class="recommend-box">
+
+                                        <h5>
+                                            🔢 Numeric Analysis
+                                        </h5>
+
+                                        <p>
+                                            Numeric columns are analyzed using
+                                            distributions and comparative
+                                            visualizations.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="col-md-4">
+
+                                    <div class="recommend-box">
+
+                                        <h5>
+                                            🏷️ Category Analysis
+                                        </h5>
+
+                                        <p>
+                                            Categorical columns are analyzed
+                                            to identify important groups and
+                                            patterns.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     TOP PRODUCTS
+                ================================================== -->
+
+                <div class="row mt-4">
+
+                    <div class="col-lg-6">
+
+                        <div class="dashboard-card">
+
+                            <h4>
+                                🏆 Top Products
+                            </h4>
+
+                            <p class="text-secondary mt-3">
+                                Product-level analysis can be displayed
+                                when product information is available
+                                in the uploaded dataset.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- RECENT ACTIVITY -->
+
+                    <div class="col-lg-6">
+
+                        <div class="dashboard-card">
+
+                            <h4>
+                                📋 Recent Activity
+                            </h4>
+
+                            <ul class="activity-list mt-3">
+
+                                <li>
+                                    ✔ Dataset uploaded
+                                </li>
+
+                                <li>
+                                    ✔ Dataset validated
+                                </li>
+
+                                <li>
+                                    ✔ ML prediction generated
+                                </li>
+
+                                <li>
+                                    ✔ Dashboard charts generated
+                                </li>
+
+                                <li>
+                                    ✔ Dashboard updated
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     AI ADVISOR
+                ================================================== -->
+
+                <div class="row mt-4">
+
+                    <div class="col-12">
+
+                        <div class="dashboard-card ai-card">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <div>
+
+                                    <h3>
+                                        🤖 SmartRetail AI Advisor
+                                    </h3>
+
+                                    <p class="text-secondary mb-0">
+                                        Personalized recommendations based
+                                        on your latest business performance.
+                                    </p>
+
+                                </div>
+
+
+                                <button class="btn btn-gradient">
+
+                                    Generate Advice
+
+                                </button>
+
+                            </div>
+
+
+                            <hr>
+
+
+                            <div class="row mt-4">
+
+
+                                <!-- INVENTORY -->
+
+                                <div class="col-md-4">
+
+                                    <div class="recommend-box">
+
+                                        <h5>
+                                            📈 Inventory
+                                        </h5>
+
+                                        <p>
+                                            Review high-performing categories
+                                            and maintain sufficient inventory.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- PRICING -->
+
+                                <div class="col-md-4">
+
+                                    <div class="recommend-box">
+
+                                        <h5>
+                                            💰 Pricing
+                                        </h5>
+
+                                        <p>
+                                            Analyze discounts and profit
+                                            margins before changing prices.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- MARKETING -->
+
+                                <div class="col-md-4">
+
+                                    <div class="recommend-box">
+
+                                        <h5>
+                                            🎯 Marketing
+                                        </h5>
+
+                                        <p>
+                                            Focus campaigns on the strongest
+                                            performing categories or regions.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

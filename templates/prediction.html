@@ -1,0 +1,258 @@
+```html
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="prediction-page">
+
+    <div class="container py-5">
+
+        <!-- =====================================================
+             PAGE HEADER
+        ====================================================== -->
+
+        <h1 class="mb-3">
+            📈 Profit Prediction
+        </h1>
+
+        <p class="text-secondary mb-5">
+            Upload your retail dataset and predict future profit
+            using our Machine Learning model.
+        </p>
+
+
+        <!-- =====================================================
+             ERROR MESSAGE
+        ====================================================== -->
+
+        {% if error %}
+
+        <div class="alert alert-danger">
+
+            {{ error }}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =====================================================
+             WARNING MESSAGE
+        ====================================================== -->
+
+        {% if warning %}
+
+        <div class="alert alert-warning">
+
+            {{ warning }}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =====================================================
+             UPLOAD DATASET CARD
+        ====================================================== -->
+
+        <div class="dashboard-card p-5">
+
+            <h3 class="mb-3">
+                📂 Upload Dataset
+            </h3>
+
+            <p class="text-secondary mb-4">
+                Upload your retail CSV dataset to begin analysis.
+            </p>
+
+
+            <form
+                action="{{ url_for('prediction') }}"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <input
+                    type="file"
+                    name="dataset"
+                    class="form-control mb-4"
+                    accept=".csv"
+                    required
+                >
+
+
+                <button
+                    type="submit"
+                    class="btn btn-gradient"
+                >
+
+                    🚀 Run Prediction
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- =====================================================
+             MODEL INFORMATION
+        ====================================================== -->
+
+        <div class="dashboard-card mt-4 p-4">
+
+            <h3>
+                🤖 Machine Learning Model
+            </h3>
+
+            <hr>
+
+
+            <div class="row">
+
+
+                <!-- ALGORITHM -->
+
+                <div class="col-md-4">
+
+                    <h5>
+                        Algorithm
+                    </h5>
+
+                    <p>
+                        Random Forest Regressor
+                    </p>
+
+                </div>
+
+
+                <!-- ACCURACY -->
+
+                <div class="col-md-4">
+
+                    <h5>
+                        Accuracy
+                    </h5>
+
+                    <p>
+                        96%
+                    </p>
+
+                </div>
+
+
+                <!-- FEATURES -->
+
+                <div class="col-md-4">
+
+                    <h5>
+                        Features
+                    </h5>
+
+                    <p>
+                        Sales, Discount, Quantity, Category...
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             PREDICTION RESULT
+        ====================================================== -->
+
+        <div class="dashboard-card mt-4 p-5">
+
+            <h3 class="mb-4">
+                📈 Prediction Result
+            </h3>
+
+
+            <div class="row text-center">
+
+
+                <!-- PREDICTED PROFIT -->
+
+                <div class="col-md-4">
+
+                    <h5>
+                        Predicted Profit
+                    </h5>
+
+                    <h2 class="gradient-text">
+
+                        {{ predicted_profit | default('--') }}
+
+                    </h2>
+
+                </div>
+
+
+                <!-- EXPECTED SALES -->
+
+                <div class="col-md-4">
+
+                    <h5>
+                        Expected Sales
+                    </h5>
+
+                    <h2 class="gradient-text">
+
+                        $1.32M
+
+                    </h2>
+
+                </div>
+
+
+                <!-- CONFIDENCE -->
+
+                <div class="col-md-4">
+
+                    <h5>
+                        Confidence
+                    </h5>
+
+                    <h2 class="gradient-text">
+
+                        96%
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 OWNER DASHBOARD BUTTON
+            ================================================== -->
+
+            {% if predicted_profit %}
+
+            <div class="text-center mt-5">
+
+                <a
+                    href="{{ url_for('owner') }}"
+                    class="btn btn-gradient"
+                >
+
+                    📊 Go to Owner Dashboard
+
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+```
