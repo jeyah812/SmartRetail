@@ -486,62 +486,28 @@
                      AI ADVISOR
                 ================================================== -->
 
-                <div class="row mt-4">
+                <div class="dashboard-card ai-card mt-4">
 
-                    <div class="col-12">
+                                <h3>🤖 SmartRetail AI Advisor</h3>
 
-                        <div class="dashboard-card ai-card">
+                                <hr>
 
-                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="ai-advice">
 
-                                <div>
-
-                                    <h3>
-                                        🤖 SmartRetail AI Advisor
-                                    </h3>
-
-                                    <p class="text-secondary mb-0">
-                                        Personalized recommendations based
-                                        on your latest business performance.
-                                    </p>
+                                    <pre style="
+                                        white-space: pre-wrap;
+                                        color: white;
+                                        font-size: 15px;
+                                        font-family: inherit;
+                                    ">
+                            <div class="ai-advice">
+    {{ advice | replace('\n', '<br>') | safe }}
+</div>
+                                    </pre>
 
                                 </div>
-
-
-                                <button class="btn btn-gradient">
-
-                                    Generate Advice
-
-                                </button>
 
                             </div>
-
-
-                            <hr>
-
-
-                            <div class="row mt-4">
-
-
-                                <!-- INVENTORY -->
-
-                                <div class="col-md-4">
-
-                                    <div class="recommend-box">
-
-                                        <h5>
-                                            📈 Inventory
-                                        </h5>
-
-                                        <p>
-                                            Review high-performing categories
-                                            and maintain sufficient inventory.
-                                        </p>
-
-                                    </div>
-
-                                </div>
-
 
                                 <!-- PRICING -->
 

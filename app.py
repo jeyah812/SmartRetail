@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request
 import os
+from src.advisor_utils import generate_ai_advice
+import markdown
 
 from src.predict import predict_profit
 from src.validator import validate_dataset
@@ -34,51 +36,35 @@ def owner():
 
     filepath = "static/uploads/latest.csv"
 
-
     if os.path.exists(filepath):
 
-        # --------------------------------------------
-        # GET DATASET STATISTICS
-        # --------------------------------------------
+        stats = get_dashboard_stats(filepath)
 
-        stats = get_dashboard_stats(
-            filepath
-        )
+        charts = generate_dashboard_charts(filepath)
 
-
-        # --------------------------------------------
-        # GENERATE DYNAMIC CHARTS
-        # --------------------------------------------
-
-        charts = generate_dashboard_charts(
-            filepath
-        )
-
+        advice = generate_ai_advice(stats)
+        advice_html = markdown.markdown(advice)
 
     else:
 
         stats = {
-
             "total_sales": 0,
-
             "total_profit": 0,
-
             "total_orders": 0
-
         }
-
 
         charts = []
 
+        advice = (
+            "Upload a dataset to receive "
+            "AI business recommendations."
+        )
 
     return render_template(
-
         "owner.html",
-
         stats=stats,
-
-        charts=charts
-
+        charts=charts,
+        advice=advice_html
     )
 
 
