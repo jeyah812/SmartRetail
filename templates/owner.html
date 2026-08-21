@@ -2,567 +2,1562 @@
 
 {% block content %}
 
+<style>
+
+/* ============================================================
+   SMARTRETAIL OWNER DASHBOARD
+   ============================================================ */
+
+.owner-dashboard {
+    min-height: 100vh;
+    background: #0f172a;
+    color: #f8fafc;
+}
+
+.owner-dashboard .container-fluid {
+    padding: 0;
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+
+.smart-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: 235px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #111b32 0%,
+            #101a30 50%,
+            #0c1528 100%
+        );
+
+    border-right: 1px solid rgba(255,255,255,0.08);
+
+    padding: 28px 18px;
+
+    z-index: 1000;
+
+    overflow-y: auto;
+}
+
+/* Logo */
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 8px 10px 28px;
+
+    font-size: 21px;
+    font-weight: 800;
+
+    color: #1683ff;
+}
+
+.sidebar-brand i {
+    font-size: 24px;
+}
+
+/* Navigation label */
+
+.sidebar-label {
+    color: #64748b;
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.5px;
+
+    margin:
+
+        8px 10px
+        12px;
+}
+
+/* Navigation */
+
+.sidebar-nav {
+    list-style: none;
+
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav li {
+    margin-bottom: 6px;
+}
+
+.sidebar-nav a {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 12px 13px;
+
+    border-radius: 10px;
+
+    color: #94a3b8;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.sidebar-nav a i {
+    width: 20px;
+
+    text-align: center;
+
+    font-size: 16px;
+}
+
+.sidebar-nav a:hover {
+    background: rgba(59,130,246,0.12);
+
+    color: #ffffff;
+
+    transform: translateX(2px);
+}
+
+.sidebar-nav a.active {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(37,99,235,0.25),
+            rgba(14,165,233,0.12)
+        );
+
+    color: #ffffff;
+
+    border-left: 3px solid #1683ff;
+}
+
+/* ============================================================
+   DATA STATUS
+   ============================================================ */
+
+.sidebar-status {
+    margin-top: 30px;
+
+    padding: 14px;
+
+    border-radius: 12px;
+
+    background: rgba(255,255,255,0.035);
+
+    border: 1px solid rgba(255,255,255,0.06);
+}
+
+.sidebar-status-title {
+    font-size: 11px;
+
+    color: #64748b;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 8px;
+}
+
+.sidebar-status-value {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    font-size: 13px;
+
+    color: #dbeafe;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #22c55e;
+
+    box-shadow:
+        0 0 8px rgba(34,197,94,0.7);
+}
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+
+.dashboard-main {
+    margin-left: 235px;
+
+    padding: 35px 42px 70px;
+
+    max-width: 1800px;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.dashboard-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 30px;
+}
+
+.dashboard-title {
+    font-size: 34px;
+
+    font-weight: 800;
+
+    margin: 0;
+}
+
+.dashboard-subtitle {
+    margin-top: 7px;
+
+    color: #94a3b8;
+
+    font-size: 15px;
+}
+
+/* Actions */
+
+.dashboard-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.search-box {
+    width: 210px;
+
+    padding: 10px 14px;
+
+    border-radius: 10px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    background: rgba(255,255,255,0.04);
+
+    color: white;
+
+    outline: none;
+}
+
+.search-box::placeholder {
+    color: #64748b;
+}
+
+.search-box:focus {
+    border-color: #1683ff;
+}
+
+/* Buttons */
+
+.icon-btn,
+.profile-btn {
+    border: 0;
+
+    background: rgba(255,255,255,0.05);
+
+    color: #cbd5e1;
+
+    border-radius: 10px;
+
+    padding: 10px 13px;
+
+    transition: 0.2s ease;
+}
+
+.icon-btn:hover,
+.profile-btn:hover {
+    background: rgba(59,130,246,0.15);
+
+    color: white;
+}
+
+/* ============================================================
+   DASHBOARD CARDS
+   ============================================================ */
+
+.dashboard-card {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30,41,59,0.95),
+            rgba(20,31,50,0.95)
+        );
+
+    border:
+        1px solid rgba(148,163,184,0.10);
+
+    border-radius: 18px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,0.18);
+
+    height: 100%;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.dashboard-card:hover {
+    border-color:
+        rgba(59,130,246,0.25);
+}
+
+/* ============================================================
+   KPI CARDS
+   ============================================================ */
+
+.kpi-card {
+    min-height: 145px;
+}
+
+.kpi-label {
+    color: #93c5fd;
+
+    font-size: 13px;
+
+    margin-bottom: 10px;
+}
+
+.kpi-value {
+    font-size: 29px;
+
+    font-weight: 800;
+
+    color: #ffffff;
+
+    margin: 0;
+}
+
+.kpi-note {
+    display: inline-block;
+
+    margin-top: 10px;
+
+    color: #22c55e;
+
+    font-size: 12px;
+}
+
+/* ============================================================
+   SECTION HEADERS
+   ============================================================ */
+
+.dashboard-section {
+    scroll-margin-top: 25px;
+
+    margin-top: 35px;
+}
+
+.section-heading {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    font-size: 22px;
+
+    font-weight: 750;
+
+    margin-bottom: 18px;
+}
+
+/* ============================================================
+   CHARTS
+   ============================================================ */
+
+.chart-card {
+    margin-bottom: 22px;
+}
+
+.chart-container {
+    width: 100%;
+
+    overflow: hidden;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+}
+
+.dashboard-chart {
+    display: block;
+
+    width: 100%;
+
+    height: auto;
+
+    border-radius: 12px;
+}
+
+/* ============================================================
+   QUICK INSIGHTS
+   ============================================================ */
+
+.insight-list,
+.activity-list {
+    list-style: none;
+
+    padding: 0;
+
+    margin: 0;
+}
+
+.insight-list li,
+.activity-list li {
+    padding: 11px 0;
+
+    border-bottom:
+        1px solid rgba(255,255,255,0.06);
+
+    color: #cbd5e1;
+
+    font-size: 14px;
+}
+
+.insight-list li:last-child,
+.activity-list li:last-child {
+    border-bottom: none;
+}
+
+/* ============================================================
+   DATASET ANALYSIS
+   ============================================================ */
+
+.analysis-box {
+    background: rgba(255,255,255,0.035);
+
+    border:
+        1px solid rgba(255,255,255,0.07);
+
+    border-radius: 14px;
+
+    padding: 18px;
+
+    height: 100%;
+}
+
+.analysis-box h5 {
+    font-size: 15px;
+
+    margin-bottom: 10px;
+}
+
+.analysis-box p {
+    color: #94a3b8;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    margin: 0;
+}
+
+/* ============================================================
+   AI ADVISOR
+   ============================================================ */
+
+.ai-card {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(35,48,105,0.95),
+            rgba(24,38,77,0.95)
+        );
+
+    border:
+        1px solid rgba(99,102,241,0.45);
+
+    box-shadow:
+        0 20px 50px rgba(30,41,120,0.22);
+}
+
+.ai-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+}
+
+.ai-title {
+    font-size: 25px;
+
+    font-weight: 800;
+
+    margin: 0;
+}
+
+.ai-description {
+    color: #a5b4fc;
+
+    margin-top: 7px;
+
+    font-size: 13px;
+}
+
+/* AI generated HTML */
+
+.ai-advice {
+    margin-top: 25px;
+
+    color: #e2e8f0;
+
+    line-height: 1.7;
+
+    font-size: 14px;
+}
+
+.ai-advice h3 {
+    color: #ffffff;
+
+    font-size: 18px;
+
+    margin-top: 28px;
+
+    margin-bottom: 12px;
+
+    padding-bottom: 8px;
+
+    border-bottom:
+        1px solid rgba(255,255,255,0.10);
+}
+
+.ai-advice h3:first-child {
+    margin-top: 0;
+}
+
+.ai-advice ul {
+    padding-left: 20px;
+
+    margin-bottom: 20px;
+}
+
+.ai-advice li {
+    margin-bottom: 9px;
+
+    color: #cbd5e1;
+}
+
+.ai-advice strong {
+    color: #ffffff;
+}
+
+/* ============================================================
+   AI BUTTON
+   ============================================================ */
+
+.btn-gradient {
+    border: 0;
+
+    border-radius: 10px;
+
+    padding: 10px 18px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #6366f1,
+            #06b6d4
+        );
+
+    color: white;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition: 0.2s ease;
+}
+
+.btn-gradient:hover {
+    color: white;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 20px rgba(59,130,246,0.25);
+}
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+
+.empty-state {
+    text-align: center;
+
+    padding: 55px 20px;
+
+    color: #94a3b8;
+}
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 991px) {
+
+    .smart-sidebar {
+        position: relative;
+
+        width: 100%;
+
+        height: auto;
+
+        border-right: none;
+
+        border-bottom:
+            1px solid rgba(255,255,255,0.08);
+
+        padding: 15px;
+    }
+
+    .sidebar-brand {
+        padding-bottom: 15px;
+    }
+
+    .sidebar-nav {
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 5px;
+    }
+
+    .sidebar-nav li {
+        margin: 0;
+    }
+
+    .sidebar-nav a {
+        padding: 9px 11px;
+    }
+
+    .sidebar-status {
+        display: none;
+    }
+
+    .dashboard-main {
+        margin-left: 0;
+
+        padding: 25px 18px 50px;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .dashboard-actions {
+        width: 100%;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .ai-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+}
+
+</style>
+
+
 <div class="owner-dashboard">
 
-    <div class="container-fluid">
+    <!-- ========================================================
+         SIDEBAR
+         ======================================================== -->
 
-        <div class="row">
+    <aside class="smart-sidebar">
 
-            <!-- =====================================================
-                 SIDEBAR
-            ====================================================== -->
+        <div class="sidebar-brand">
 
-            <div class="col-lg-2 sidebar">
+            <i class="bi bi-shop"></i>
 
-                <h3 class="sidebar-logo">
-                    <i class="bi bi-shop"></i>
-                    SmartRetail
-                </h3>
+            <span>SmartRetail</span>
 
-                <ul class="sidebar-menu">
+        </div>
+
+
+        <div class="sidebar-label">
+            Dashboard
+        </div>
+
+
+        <ul class="sidebar-nav">
+
+            <li>
+
+                <a
+                    href="#overview"
+                    class="active"
+                >
+
+                    <i class="bi bi-grid-fill"></i>
+
+                    <span>Overview</span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="#analytics">
+
+                    <i class="bi bi-bar-chart-line-fill"></i>
+
+                    <span>Analytics</span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="{{ url_for('prediction') }}">
+
+                    <i class="bi bi-graph-up-arrow"></i>
+
+                    <span>Prediction</span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="#dataset">
+
+                    <i class="bi bi-database-fill"></i>
+
+                    <span>Dataset</span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="#recommendations">
+
+                    <i class="bi bi-lightbulb-fill"></i>
+
+                    <span>AI Recommendations</span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="#activity">
+
+                    <i class="bi bi-clock-history"></i>
+
+                    <span>Activity</span>
+
+                </a>
+
+            </li>
+
+        </ul>
+
+
+        <div class="sidebar-status">
+
+            <div class="sidebar-status-title">
+                System Status
+            </div>
+
+            <div class="sidebar-status-value">
+
+                <span class="status-dot"></span>
+
+                Dataset loaded
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ========================================================
+         MAIN CONTENT
+         ======================================================== -->
+
+    <main class="dashboard-main">
+
+
+        <!-- ====================================================
+             HEADER
+             ==================================================== -->
+
+        <section
+            id="overview"
+            class="dashboard-section"
+            style="margin-top: 0;"
+        >
+
+            <div class="dashboard-header">
+
+                <div>
+
+                    <h1 class="dashboard-title">
+                        Dashboard Overview
+                    </h1>
+
+                    <p class="dashboard-subtitle">
+                        Welcome back! Here's your SmartRetail
+                        business intelligence summary.
+                    </p>
+
+                </div>
+
+
+                <div class="dashboard-actions">
+
+                    <input
+                        type="text"
+                        id="dashboardSearch"
+                        class="search-box"
+                        placeholder="Search dashboard..."
+                    >
+
+
+                    <button
+                        type="button"
+                        class="icon-btn"
+                        id="activityButton"
+                        title="View recent activity"
+                    >
+
+                        <i class="bi bi-bell-fill"></i>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="profile-btn"
+                        title="Owner dashboard"
+                    >
+
+                        <i class="bi bi-person-circle"></i>
+
+                        Owner
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 KPI CARDS
+                 ================================================== -->
+
+            <div class="row g-4">
+
+
+                <div class="col-xl-3 col-md-6">
+
+                    <div class="dashboard-card kpi-card">
+
+                        <div class="kpi-label">
+                            Total Sales
+                        </div>
+
+                        <h2 class="kpi-value">
+                            ${{ "{:,.2f}".format(stats.total_sales) }}
+                        </h2>
+
+                        <span class="kpi-note">
+                            Dataset loaded successfully
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-xl-3 col-md-6">
+
+                    <div class="dashboard-card kpi-card">
+
+                        <div class="kpi-label">
+                            Total Profit
+                        </div>
+
+                        <h2 class="kpi-value">
+                            ${{ "{:,.2f}".format(stats.total_profit) }}
+                        </h2>
+
+                        <span class="kpi-note">
+                            Profit generated
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-xl-3 col-md-6">
+
+                    <div class="dashboard-card kpi-card">
+
+                        <div class="kpi-label">
+                            Total Records
+                        </div>
+
+                        <h2 class="kpi-value">
+                            {{ stats.total_orders }}
+                        </h2>
+
+                        <span class="kpi-note">
+                            Transactions analyzed
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-xl-3 col-md-6">
+
+                    <div class="dashboard-card kpi-card">
+
+                        <div class="kpi-label">
+                            ML Accuracy
+                        </div>
+
+                        <h2 class="kpi-value">
+                            --
+                        </h2>
+
+                        <span class="kpi-note">
+                            Predictive model
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ====================================================
+             ANALYTICS
+             ==================================================== -->
+
+        <section
+            id="analytics"
+            class="dashboard-section"
+        >
+
+            <h2 class="section-heading">
+
+                📊
+
+                Data Visualizations
+
+            </h2>
+
+
+            <div class="row g-4">
+
+                {% if charts %}
+
+                    {% for chart in charts %}
+
+                        <div class="col-xl-8 col-lg-7">
+
+                            <div class="dashboard-card chart-card">
+
+                                <h4 class="mb-4">
+                                    📊 {{ chart.title }}
+                                </h4>
+
+                                <div class="chart-container">
+
+                                    <img
+                                        src="{{ url_for(
+                                            'static',
+                                            filename='images/' + chart.image
+                                        ) }}"
+                                        class="dashboard-chart"
+                                        alt="{{ chart.title }}"
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <div class="col-12">
+
+                        <div class="dashboard-card empty-state">
+
+                            <h4>
+                                📊 No Analysis Available
+                            </h4>
+
+                            <p>
+                                Upload a dataset from the
+                                Prediction page to generate
+                                dashboard analytics.
+                            </p>
+
+                            <a
+                                href="{{ url_for('prediction') }}"
+                                class="btn-gradient"
+                            >
+                                Upload Dataset
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- QUICK INSIGHTS -->
+
+                <div class="col-xl-4 col-lg-5">
+
+                    <div class="dashboard-card">
+
+                        <h4 class="mb-4">
+                            💡 Quick Insights
+                        </h4>
+
+                        <ul class="insight-list">
+
+                            <li>
+                                📈 Dataset analyzed successfully
+                            </li>
+
+                            <li>
+                                💰 Profit information available
+                            </li>
+
+                            <li>
+                                🤖 Predictive model available
+                            </li>
+
+                            <li>
+                                📊 Dynamic charts generated
+                            </li>
+
+                            <li>
+                                🧠 AI recommendations generated
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ====================================================
+             DATASET
+             ==================================================== -->
+
+        <section
+            id="dataset"
+            class="dashboard-section"
+        >
+
+            <h2 class="section-heading">
+
+                📋
+
+                Dataset Analysis
+
+            </h2>
+
+
+            <div class="dashboard-card">
+
+                <p class="text-secondary">
+
+                    SmartRetail automatically analyzes the
+                    uploaded dataset according to the available
+                    date, numeric and categorical columns.
+
+                </p>
+
+
+                <div class="row g-4 mt-2">
+
+
+                    <div class="col-md-4">
+
+                        <div class="analysis-box">
+
+                            <h5>
+                                📅 Date Analysis
+                            </h5>
+
+                            <p>
+                                Time-based trends are generated
+                                automatically when date information
+                                is available.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="analysis-box">
+
+                            <h5>
+                                🔢 Numeric Analysis
+                            </h5>
+
+                            <p>
+                                Numeric columns are analyzed using
+                                distributions and comparative
+                                visualizations.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="analysis-box">
+
+                            <h5>
+                                🏷️ Category Analysis
+                            </h5>
+
+                            <p>
+                                Categorical columns are analyzed
+                                to identify important groups,
+                                products and patterns.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ====================================================
+             ACTIVITY
+             ==================================================== -->
+
+        <section
+            id="activity"
+            class="dashboard-section"
+        >
+
+            <h2 class="section-heading">
+
+                🕒
+
+                Recent Activity
+
+            </h2>
+
+
+            <div class="dashboard-card">
+
+                <ul class="activity-list">
 
                     <li>
-                        <a href="{{ url_for('owner') }}">
-                            <i class="bi bi-grid-fill"></i>
-                            Dashboard
-                        </a>
+                        ✔ Dataset uploaded
                     </li>
 
                     <li>
-                        <a href="#">
-                            <i class="bi bi-bar-chart-line-fill"></i>
-                            Analytics
-                        </a>
+                        ✔ Dataset validated
                     </li>
 
                     <li>
-                        <a href="{{ url_for('prediction') }}">
-                            <i class="bi bi-graph-up-arrow"></i>
-                            Prediction
-                        </a>
+                        ✔ ML prediction generated
                     </li>
 
                     <li>
-                        <a href="#">
-                            <i class="bi bi-lightbulb-fill"></i>
-                            Recommendations
-                        </a>
+                        ✔ Dashboard charts generated
                     </li>
 
                     <li>
-                        <a href="#">
-                            <i class="bi bi-people-fill"></i>
-                            Customers
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="#">
-                            <i class="bi bi-gear-fill"></i>
-                            Settings
-                        </a>
+                        ✔ AI recommendations generated
                     </li>
 
                 </ul>
 
             </div>
 
-
-            <!-- =====================================================
-                 DASHBOARD CONTENT
-            ====================================================== -->
-
-            <div class="col-lg-10 dashboard-content">
+        </section>
 
 
-                <!-- =================================================
-                     HEADER
-                ================================================== -->
+        <!-- ====================================================
+             AI ADVISOR
+             ==================================================== -->
 
-                <div class="dashboard-header">
+        <section
+            id="recommendations"
+            class="dashboard-section"
+        >
+
+            <div class="dashboard-card ai-card">
+
+                <div class="ai-header">
 
                     <div>
 
-                        <h2 class="dashboard-title">
-                            Dashboard Overview
+                        <h2 class="ai-title">
+                            🤖 SmartRetail AI Advisor
                         </h2>
 
-                        <p class="dashboard-subtitle">
-                            Welcome back! Here's your business summary.
+                        <p class="ai-description">
+                            Personalized recommendations based
+                            on the latest business performance.
                         </p>
 
                     </div>
 
 
-                    <div class="dashboard-actions">
-
-                        <input
-                            type="text"
-                            placeholder="Search..."
-                            class="search-box"
-                        >
-
-                        <button class="icon-btn">
-                            <i class="bi bi-bell-fill"></i>
-                        </button>
-
-                        <button class="profile-btn">
-                            <i class="bi bi-person-circle"></i>
-                            Owner
-                        </button>
-
-                    </div>
+                    <a
+                        href="#recommendations"
+                        class="btn-gradient"
+                        onclick="
+                            document
+                            .getElementById('recommendations')
+                            .scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        "
+                    >
+                        View Recommendations
+                    </a>
 
                 </div>
 
 
-                <!-- =================================================
-                     KPI CARDS
-                ================================================== -->
-
-                <div class="row mt-4">
-
-
-                    <!-- TOTAL SALES -->
-
-                    <div class="col-lg-3 col-md-6">
-
-                        <div class="dashboard-card">
-
-                            <div class="card-top">
-
-                                <div>
-
-                                    <h6>
-                                        Total Sales
-                                    </h6>
-
-                                    <h2>
-                                        ${{ "{:,.2f}".format(
-                                            stats.total_sales
-                                        ) }}
-                                    </h2>
-
-                                </div>
-
-                                <div class="card-icon">
-
-                                    <i class="bi bi-currency-dollar"></i>
-
-                                </div>
-
-                            </div>
-
-                            <span class="trend-up">
-                                Dataset Loaded Successfully
-                            </span>
-
-                        </div>
-
-                    </div>
+                <hr
+                    style="
+                        border-color:
+                        rgba(255,255,255,0.12);
+                    "
+                >
 
 
-                    <!-- TOTAL PROFIT -->
+                <!-- IMPORTANT:
+                     DO NOT PUT THIS INSIDE <pre>.
+                     The Flask backend already converts
+                     Markdown into HTML.
+                -->
 
-                    <div class="col-lg-3 col-md-6">
+                <div class="ai-advice">
 
-                        <div class="dashboard-card">
+                    {% if advice %}
 
-                            <h6>
-                                Total Profit
-                            </h6>
-
-                            <h2>
-                                ${{ "{:,.2f}".format(
-                                    stats.total_profit
-                                ) }}
-                            </h2>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- TOTAL RECORDS -->
-
-                    <div class="col-lg-3 col-md-6">
-
-                        <div class="dashboard-card">
-
-                            <h6>
-                                Total Records
-                            </h6>
-
-                            <h2>
-                                {{ stats.total_orders }}
-                            </h2>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- ML ACCURACY -->
-
-                    <div class="col-lg-3 col-md-6">
-
-                        <div class="dashboard-card">
-
-                            <h6>
-                                ML Accuracy
-                            </h6>
-
-                            <h2>
-                                96%
-                            </h2>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     DYNAMIC DATA VISUALIZATIONS
-                ================================================== -->
-
-                <div class="row mt-4">
-
-                    {% if charts %}
-
-                        {% for chart in charts %}
-
-                            <div class="col-lg-8 mb-4">
-
-                                <div class="dashboard-card">
-
-                                    <h4 class="mb-4">
-                                        📊 {{ chart.title }}
-                                    </h4>
-
-                                    <div class="chart-container">
-
-                                        <img
-                                            src="{{ url_for(
-                                                'static',
-                                                filename='images/' + chart.image
-                                            ) }}"
-                                            class="dashboard-chart img-fluid rounded"
-                                            alt="{{ chart.title }}"
-                                        >
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        {% endfor %}
+                        {{ advice | safe }}
 
                     {% else %}
 
-                        <div class="col-12">
-
-                            <div class="dashboard-card text-center p-5">
-
-                                <h4>
-                                    📊 No Analysis Available
-                                </h4>
-
-                                <p class="text-secondary mt-3">
-                                    Upload a dataset from the Prediction
-                                    page to generate dashboard analytics.
-                                </p>
-
-                                <a
-                                    href="{{ url_for('prediction') }}"
-                                    class="btn btn-gradient mt-3"
-                                >
-                                    📂 Upload Dataset
-                                </a>
-
-                            </div>
-
-                        </div>
+                        <p>
+                            Upload a dataset to receive
+                            AI-powered business recommendations.
+                        </p>
 
                     {% endif %}
 
-
-                    <!-- =================================================
-                         QUICK INSIGHTS
-                    ================================================== -->
-
-                    <div class="col-lg-4 mb-4">
-
-                        <div class="dashboard-card">
-
-                            <h4>
-                                💡 Quick Insights
-                            </h4>
-
-                            <ul class="insight-list">
-
-                                <li>
-                                    📈 Dataset analyzed successfully
-                                </li>
-
-                                <li>
-                                    💰 Profit information available
-                                </li>
-
-                                <li>
-                                    🤖 Random Forest selected
-                                </li>
-
-                                <li>
-                                    📊 Dynamic charts generated
-                                </li>
-
-                            </ul>
-
-                        </div>
-
-                    </div>
-
                 </div>
-
-
-                <!-- =================================================
-                     DATASET INFORMATION
-                ================================================== -->
-
-                <div class="row mt-2">
-
-                    <div class="col-12">
-
-                        <div class="dashboard-card">
-
-                            <h4>
-                                📋 Dataset Analysis
-                            </h4>
-
-                            <p class="text-secondary mt-3">
-                                The uploaded dataset has been analyzed
-                                automatically. Visualizations are selected
-                                according to the available date, numeric,
-                                and categorical columns.
-                            </p>
-
-                            <div class="row mt-4">
-
-                                <div class="col-md-4">
-
-                                    <div class="recommend-box">
-
-                                        <h5>
-                                            📅 Date Analysis
-                                        </h5>
-
-                                        <p>
-                                            Time-based trends are generated
-                                            automatically when date information
-                                            is available.
-                                        </p>
-
-                                    </div>
-
-                                </div>
-
-
-                                <div class="col-md-4">
-
-                                    <div class="recommend-box">
-
-                                        <h5>
-                                            🔢 Numeric Analysis
-                                        </h5>
-
-                                        <p>
-                                            Numeric columns are analyzed using
-                                            distributions and comparative
-                                            visualizations.
-                                        </p>
-
-                                    </div>
-
-                                </div>
-
-
-                                <div class="col-md-4">
-
-                                    <div class="recommend-box">
-
-                                        <h5>
-                                            🏷️ Category Analysis
-                                        </h5>
-
-                                        <p>
-                                            Categorical columns are analyzed
-                                            to identify important groups and
-                                            patterns.
-                                        </p>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     TOP PRODUCTS
-                ================================================== -->
-
-                <div class="row mt-4">
-
-                    <div class="col-lg-6">
-
-                        <div class="dashboard-card">
-
-                            <h4>
-                                🏆 Top Products
-                            </h4>
-
-                            <p class="text-secondary mt-3">
-                                Product-level analysis can be displayed
-                                when product information is available
-                                in the uploaded dataset.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- RECENT ACTIVITY -->
-
-                    <div class="col-lg-6">
-
-                        <div class="dashboard-card">
-
-                            <h4>
-                                📋 Recent Activity
-                            </h4>
-
-                            <ul class="activity-list mt-3">
-
-                                <li>
-                                    ✔ Dataset uploaded
-                                </li>
-
-                                <li>
-                                    ✔ Dataset validated
-                                </li>
-
-                                <li>
-                                    ✔ ML prediction generated
-                                </li>
-
-                                <li>
-                                    ✔ Dashboard charts generated
-                                </li>
-
-                                <li>
-                                    ✔ Dashboard updated
-                                </li>
-
-                            </ul>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     AI ADVISOR
-                ================================================== -->
-
-                <div class="dashboard-card ai-card mt-4">
-
-                                <h3>🤖 SmartRetail AI Advisor</h3>
-
-                                <hr>
-
-                                <div class="ai-advice">
-
-                                    <pre style="
-                                        white-space: pre-wrap;
-                                        color: white;
-                                        font-size: 15px;
-                                        font-family: inherit;
-                                    ">
-                            <div class="ai-advice">
-    {{ advice | replace('\n', '<br>') | safe }}
-</div>
-                                    </pre>
-
-                                </div>
-
-                            </div>
-
-                                <!-- PRICING -->
-
-                                <div class="col-md-4">
-
-                                    <div class="recommend-box">
-
-                                        <h5>
-                                            💰 Pricing
-                                        </h5>
-
-                                        <p>
-                                            Analyze discounts and profit
-                                            margins before changing prices.
-                                        </p>
-
-                                    </div>
-
-                                </div>
-
-
-                                <!-- MARKETING -->
-
-                                <div class="col-md-4">
-
-                                    <div class="recommend-box">
-
-                                        <h5>
-                                            🎯 Marketing
-                                        </h5>
-
-                                        <p>
-                                            Focus campaigns on the strongest
-                                            performing categories or regions.
-                                        </p>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
 
             </div>
 
-        </div>
+        </section>
 
-    </div>
+
+    </main>
 
 </div>
+
+
+<!-- ============================================================
+     DASHBOARD JAVASCRIPT
+     ============================================================ -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        /* ================================================
+           SIDEBAR ACTIVE STATE
+           ================================================ */
+
+        const navLinks =
+            document.querySelectorAll(
+                ".sidebar-nav a[href^='#']"
+            );
+
+        navLinks.forEach(
+            function (link) {
+
+                link.addEventListener(
+                    "click",
+                    function () {
+
+                        navLinks.forEach(
+                            function (item) {
+
+                                item.classList.remove(
+                                    "active"
+                                );
+
+                            }
+                        );
+
+                        this.classList.add(
+                            "active"
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* ================================================
+           NOTIFICATION BUTTON
+           ================================================ */
+
+        const activityButton =
+            document.getElementById(
+                "activityButton"
+            );
+
+        if (activityButton) {
+
+            activityButton.addEventListener(
+                "click",
+                function () {
+
+                    const activity =
+                        document.getElementById(
+                            "activity"
+                        );
+
+                    if (activity) {
+
+                        activity.scrollIntoView({
+                            behavior: "smooth"
+                        });
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* ================================================
+           DASHBOARD SEARCH
+           ================================================ */
+
+        const search =
+            document.getElementById(
+                "dashboardSearch"
+            );
+
+        if (search) {
+
+            search.addEventListener(
+                "input",
+                function () {
+
+                    const query =
+                        this.value
+                        .toLowerCase()
+                        .trim();
+
+                    const sections =
+                        document.querySelectorAll(
+                            ".dashboard-section"
+                        );
+
+                    sections.forEach(
+                        function (section) {
+
+                            if (!query) {
+
+                                section.style.display =
+                                    "";
+
+                                return;
+
+                            }
+
+                            const text =
+                                section
+                                .innerText
+                                .toLowerCase();
+
+                            section.style.display =
+                                text.includes(query)
+                                ? ""
+                                : "none";
+
+                        }
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* ================================================
+           ACTIVE SECTION ON SCROLL
+           ================================================ */
+
+        const sections =
+            document.querySelectorAll(
+                ".dashboard-section"
+            );
+
+        const observer =
+            new IntersectionObserver(
+                function (entries) {
+
+                    entries.forEach(
+                        function (entry) {
+
+                            if (
+                                entry.isIntersecting
+                            ) {
+
+                                const id =
+                                    entry.target.id;
+
+                                navLinks.forEach(
+                                    function (link) {
+
+                                        link.classList.remove(
+                                            "active"
+                                        );
+
+                                        if (
+                                            link.getAttribute(
+                                                "href"
+                                            ) === "#" + id
+                                        ) {
+
+                                            link.classList.add(
+                                                "active"
+                                            );
+
+                                        }
+
+                                    }
+                                );
+
+                            }
+
+                        }
+                    );
+
+                },
+                {
+                    threshold: 0.25
+                }
+            );
+
+
+        sections.forEach(
+            function (section) {
+
+                observer.observe(
+                    section
+                );
+
+            }
+        );
+
+    }
+);
+
+</script>
 
 {% endblock %}
