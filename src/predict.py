@@ -410,7 +410,7 @@ def predict_profit(file_path):
     )
 
     # ========================================================
-    # COMPARISON
+    # COMPARISON & CHART GENERATION
     # ========================================================
 
     difference = (
@@ -430,6 +430,46 @@ def predict_profit(file_path):
     else:
 
         deviation_percentage = 0
+
+    # Generate Actual vs Predicted Profit chart by Category
+    comparison_chart_name = "profit_comparison.png"
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+
+        df_comp = df.copy()
+        df_comp["Predicted Profit"] = predictions
+
+        cat_summary = (
+            df_comp.groupby("Category")[["Profit", "Predicted Profit"]]
+            .sum()
+            .reset_index()
+        )
+
+        fig, ax = plt.subplots(figsize=(8, 4.5))
+        x = range(len(cat_summary["Category"]))
+        width = 0.35
+
+        ax.bar([i - width/2 for i in x], cat_summary["Profit"], width, label="Actual Profit", color="#2563eb")
+        ax.bar([i + width/2 for i in x], cat_summary["Predicted Profit"], width, label="Predicted Profit", color="#10b981")
+
+        ax.set_ylabel("Profit ($)")
+        ax.set_title("Actual Profit vs Predicted Profit by Category")
+        ax.set_xticks(list(x))
+        ax.set_xticklabels(cat_summary["Category"], rotation=15)
+        ax.legend()
+        ax.grid(True, linestyle="--", alpha=0.5)
+
+        chart_dir = os.path.join(PROJECT_ROOT, "static", "images")
+        os.makedirs(chart_dir, exist_ok=True)
+        chart_path = os.path.join(chart_dir, comparison_chart_name)
+        plt.tight_layout()
+        plt.savefig(chart_path, bbox_inches="tight", dpi=150)
+        plt.close()
+    except Exception as chart_err:
+        print("Comparison chart error:", chart_err)
+        comparison_chart_name = None
 
     # ========================================================
     # RETURN
@@ -468,6 +508,9 @@ def predict_profit(file_path):
                 ),
                 2
             ),
+
+        "comparison_chart":
+            comparison_chart_name,
 
         "model":
             metrics.get(

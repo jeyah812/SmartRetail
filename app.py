@@ -248,7 +248,11 @@ def owner():
 def prediction():
 
     # Default values shown when page is opened
+    actual_profit = None
     predicted_profit = None
+    difference = None
+    deviation_percentage = None
+    comparison_chart = None
     model_name = None
     r2_score = None
     mae = None
@@ -264,7 +268,11 @@ def prediction():
 
         return render_template(
             "prediction.html",
+            actual_profit=None,
             predicted_profit=None,
+            difference=None,
+            deviation_percentage=None,
+            comparison_chart=None,
             model_name=None,
             r2_score=None,
             mae=None,
@@ -393,9 +401,17 @@ def prediction():
 
             if isinstance(result, dict):
 
+                actual_profit = result.get("actual_profit")
+
                 predicted_profit = result.get(
                     "predicted_profit"
                 )
+
+                difference = result.get("difference")
+
+                deviation_percentage = result.get("deviation_percentage")
+
+                comparison_chart = result.get("comparison_chart")
 
                 model_name = (
                     result.get("model_name")
@@ -418,6 +434,10 @@ def prediction():
             else:
 
                 predicted_profit = result
+                actual_profit = None
+                difference = None
+                deviation_percentage = None
+                comparison_chart = None
 
                 model_name = "Linear Regression"
 
@@ -468,7 +488,15 @@ def prediction():
     return render_template(
         "prediction.html",
 
+        actual_profit=actual_profit,
+
         predicted_profit=predicted_profit,
+
+        difference=difference,
+
+        deviation_percentage=deviation_percentage,
+
+        comparison_chart=comparison_chart,
 
         model_name=model_name,
 

@@ -11,20 +11,12 @@ load_dotenv()
 
 api_key = os.getenv("GROQ_API_KEY")
 
-if not api_key:
-    raise ValueError(
-        "GROQ_API_KEY not found. "
-        "Please add your API key to the .env file."
-    )
-
 
 # ============================================================
 # GROQ CLIENT
 # ============================================================
 
-client = Groq(
-    api_key=api_key
-)
+client = Groq(api_key=api_key) if api_key else None
 
 
 # ============================================================
@@ -32,6 +24,13 @@ client = Groq(
 # ============================================================
 
 def get_business_advice(prompt):
+
+    if not client:
+        return """
+<h3>AI Advisor Notice</h3>
+<p>GROQ_API_KEY is not configured in environment variables (.env file).</p>
+<p>Please add your Groq API key to generate live LLM recommendations.</p>
+"""
 
     response = client.chat.completions.create(
 
