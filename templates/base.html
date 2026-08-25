@@ -65,6 +65,8 @@
                     <a class="nav-link" href="{{ url_for('home') }}">Home</a>
                 </li>
 
+                {% if session.get('role') == 'owner' %}
+
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('owner') }}">Owner Dashboard</a>
                 </li>
@@ -74,9 +76,27 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="btn btn-login ms-3" href="#">
+                    <a class="nav-link" href="{{ url_for('inventory') }}">Inventory</a>
+                </li>
+
+                {% elif session.get('role') == 'inventory_manager' %}
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('inventory') }}">Inventory</a>
+                </li>
+
+                {% endif %}
+
+                <li class="nav-item">
+                    {% if session.get('role') %}
+                    <a class="btn btn-login ms-3" href="{{ url_for('logout') }}">
+                        Logout
+                    </a>
+                    {% else %}
+                    <a class="btn btn-login ms-3" href="{{ url_for('login') }}">
                         Login
                     </a>
+                    {% endif %}
                 </li>
 
             </ul>

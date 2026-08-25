@@ -772,6 +772,19 @@
 
             <li>
 
+                <a href="{{ url_for('inventory') }}">
+
+                    <i class="bi bi-box-seam-fill"></i>
+
+                    <span>Inventory</span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
                 <a href="#dataset">
 
                     <i class="bi bi-database-fill"></i>
@@ -977,15 +990,94 @@
                     <div class="dashboard-card kpi-card">
 
                         <div class="kpi-label">
-                            ML Accuracy
+                            Model R²
                         </div>
 
                         <h2 class="kpi-value">
-                            --
+                            {% if stats.r2_percentage is defined and stats.r2_percentage is not none %}
+                                {{ "{:.2f}".format(stats.r2_percentage) }}%
+                            {% else %}
+                                --
+                            {% endif %}
                         </h2>
 
                         <span class="kpi-note">
-                            Predictive model
+                            {% if stats.model_name is defined and stats.model_name %}
+                                {{ stats.model_name }}
+                            {% else %}
+                                Predictive model
+                            {% endif %}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 INVENTORY KPIs
+                 ================================================== -->
+
+            <div class="row g-4 mt-1">
+
+                <div class="col-xl-4 col-md-6">
+
+                    <div class="dashboard-card kpi-card">
+
+                        <div class="kpi-label">
+                            Inventory Products
+                        </div>
+
+                        <h2 class="kpi-value">
+                            {{ inventory_stats.total_products }}
+                        </h2>
+
+                        <span class="kpi-note">
+                            Products currently tracked
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-xl-4 col-md-6">
+
+                    <div class="dashboard-card kpi-card">
+
+                        <div class="kpi-label">
+                            Low Stock Items
+                        </div>
+
+                        <h2 class="kpi-value">
+                            {{ inventory_stats.low_stock_items }}
+                        </h2>
+
+                        <span class="kpi-note">
+                            Items requiring attention
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-xl-4 col-md-6">
+
+                    <div class="dashboard-card kpi-card">
+
+                        <div class="kpi-label">
+                            Critical Alerts
+                        </div>
+
+                        <h2 class="kpi-value">
+                            {{ inventory_stats.critical_alerts }}
+                        </h2>
+
+                        <span class="kpi-note">
+                            Critical inventory conditions
                         </span>
 
                     </div>
@@ -1108,6 +1200,10 @@
 
                             <li>
                                 🧠 AI recommendations generated
+                            </li>
+
+                            <li>
+                                📦 Inventory status monitored
                             </li>
 
                         </ul>

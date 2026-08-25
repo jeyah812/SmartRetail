@@ -3,13 +3,16 @@ from flask import (
     render_template,
     request,
     redirect,
-    url_for
+    url_for,
+    session
 )
 
 import os
 import markdown
+from functools import wraps
 from uuid import uuid4
 
+from config import Config
 from src.advisor_utils import generate_ai_advice
 from src.predict import predict_profit
 from src.validator import validate_dataset
@@ -23,6 +26,10 @@ from src.dashboard import (
     get_dashboard_stats,
     generate_dashboard_charts
 )
+from src.inventory import (
+    get_inventory_stats,
+    load_inventory_data
+)
 
 
 # ============================================================
@@ -30,6 +37,61 @@ from src.dashboard import (
 # ============================================================
 
 app = Flask(__name__)
+app.config.from_object(
+    Config
+)
+
+
+# ============================================================
+# AUTHENTICATION
+# ============================================================
+
+USERS = {
+
+    "owner": {
+
+        "password": "owner123",
+
+        "role": "owner"
+
+    },
+
+    "inventory": {
+
+        "password": "inventory123",
+
+        "role": "inventory_manager"
+
+    }
+
+}
+
+
+def require_roles(*allowed_roles):
+
+    def decorator(view_function):
+
+        @wraps(view_function)
+        def wrapped_view(*args, **kwargs):
+
+            role = session.get(
+                "role"
+            )
+
+            if role not in allowed_roles:
+
+                return redirect(
+                    url_for("login")
+                )
+
+            return view_function(
+                *args,
+                **kwargs
+            )
+
+        return wrapped_view
+
+    return decorator
 
 
 # ============================================================
@@ -72,11 +134,130 @@ def home():
 
 
 # ============================================================
+# LOGIN
+# ============================================================
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+
+    if session.get("role") == "owner":
+
+        return redirect(
+            url_for("owner")
+        )
+
+    if session.get("role") == "inventory_manager":
+
+        return redirect(
+            url_for("inventory")
+        )
+
+    error = None
+
+    if request.method == "POST":
+
+        username = request.form.get(
+            "username",
+            ""
+        ).strip()
+
+        password = request.form.get(
+            "password",
+            ""
+        )
+
+        user = USERS.get(username)
+
+        if user and password == user["password"]:
+
+            session.clear()
+
+            session["username"] = username
+
+            session["role"] = user["role"]
+
+            if user["role"] == "owner":
+
+                return redirect(
+                    url_for("owner")
+                )
+
+            return redirect(
+                url_for("inventory")
+            )
+
+        error = "Invalid username or password."
+
+    return render_template(
+        "login.html",
+        error=error,
+        inventory_access=False
+    )
+
+
+# ============================================================
+# LOGOUT
+# ============================================================
+
+@app.route("/logout")
+def logout():
+
+    session.clear()
+
+    return redirect(
+        url_for("home")
+    )
+
+
+# ============================================================
+# INVENTORY
+# ============================================================
+
+@app.route("/inventory")
+@require_roles("owner", "inventory_manager")
+def inventory():
+
+    inventory_stats = get_inventory_stats()
+
+    inventory_records = load_inventory_data().to_dict(
+        orient="records"
+    )
+
+    return render_template(
+        "inventory.html",
+        total_products=inventory_stats["total_products"],
+        low_stock_items=inventory_stats["low_stock_items"],
+        critical_alerts=inventory_stats["critical_alerts"],
+        inventory_records=inventory_records
+    )
+
+
+# ============================================================
 # OWNER DASHBOARD
 # ============================================================
 
 @app.route("/owner")
+@require_roles("owner")
 def owner():
+
+    # --------------------------------------------------------
+    # LOAD INVENTORY STATISTICS
+    # --------------------------------------------------------
+
+    try:
+        inventory_stats = get_inventory_stats()
+
+    except Exception as error:
+        print(
+            "Inventory statistics error:",
+            error
+        )
+
+        inventory_stats = {
+            "total_products": 0,
+            "low_stock_items": 0,
+            "critical_alerts": 0
+        }
 
     # --------------------------------------------------------
     # CHECK LATEST DATASET
@@ -92,7 +273,13 @@ def owner():
 
             "total_profit": 0,
 
-            "total_orders": 0
+            "total_orders": 0,
+
+            "r2_score": None,
+
+            "r2_percentage": None,
+
+            "model_name": None
 
         }
 
@@ -130,7 +317,9 @@ def owner():
 
             charts=charts,
 
-            advice=advice_html
+            advice=advice_html,
+
+            inventory_stats=inventory_stats
 
         )
 
@@ -158,7 +347,13 @@ def owner():
 
             "total_profit": 0,
 
-            "total_orders": 0
+            "total_orders": 0,
+
+            "r2_score": None,
+
+            "r2_percentage": None,
+
+            "model_name": None
 
         }
 
@@ -235,7 +430,9 @@ def owner():
 
         charts=charts,
 
-        advice=advice_html
+        advice=advice_html,
+
+        inventory_stats=inventory_stats
 
     )
 
@@ -245,6 +442,7 @@ def owner():
 # ============================================================
 
 @app.route("/prediction", methods=["GET", "POST"])
+@require_roles("owner")
 def prediction():
 
     # Default values shown when page is opened

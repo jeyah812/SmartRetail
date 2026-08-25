@@ -1,3 +1,6 @@
+import json
+import os
+
 import pandas as pd
 import matplotlib
 
@@ -9,14 +12,54 @@ matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
 
-import os
-
-
 # ============================================================
 # CHART FOLDER
 # ============================================================
 
 CHART_FOLDER = "static/images"
+
+PROJECT_ROOT = os.path.dirname(
+    os.path.dirname(
+        os.path.abspath(__file__)
+    )
+)
+
+METRICS_PATH = os.path.join(
+    PROJECT_ROOT,
+    "models",
+    "model_metrics.json"
+)
+
+
+# ============================================================
+# MODEL METRICS
+# ============================================================
+
+def load_model_metrics():
+
+    try:
+
+        with open(
+            METRICS_PATH,
+            "r"
+        ) as f:
+
+            metrics = json.load(
+                f
+            )
+
+        if isinstance(
+            metrics,
+            dict
+        ):
+
+            return metrics
+
+    except (OSError, json.JSONDecodeError):
+
+        pass
+
+    return {}
 
 
 # ============================================================
@@ -77,6 +120,20 @@ def get_dashboard_stats(file_path):
     )
 
     stats = {}
+
+    metrics = load_model_metrics()
+
+    stats["r2_score"] = metrics.get(
+        "r2_score"
+    )
+
+    stats["r2_percentage"] = metrics.get(
+        "r2_percentage"
+    )
+
+    stats["model_name"] = metrics.get(
+        "best_model"
+    )
 
     # ========================================================
     # SALES
