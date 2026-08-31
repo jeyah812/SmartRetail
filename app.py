@@ -6,11 +6,14 @@ from flask import (
     url_for,
     session
 )
+from flask import request, jsonify
 
 import os
 import markdown
 from functools import wraps
 from uuid import uuid4
+from src.chatbot import ask_groq
+import json
 
 from config import Config
 from src.advisor_utils import generate_ai_advice
@@ -28,7 +31,16 @@ from src.dashboard import (
 )
 from src.inventory import (
     get_inventory_stats,
-    load_inventory_data
+    load_inventory_data,
+    get_reorder_alerts,
+    get_product_movement,
+    get_inventory_chart_data
+)
+from src.sustainability import (
+    get_sustainability_data
+)
+from src.sales_analytics import (
+    get_sales_analytics
 )
 
 
@@ -219,17 +231,454 @@ def inventory():
 
     inventory_stats = get_inventory_stats()
 
-    inventory_records = load_inventory_data().to_dict(
-        orient="records"
+    reorder_alerts = get_reorder_alerts()
+
+    movement_stats = get_product_movement(
+        LATEST_FILE
     )
+
+    inventory_chart_data = get_inventory_chart_data()
 
     return render_template(
         "inventory.html",
         total_products=inventory_stats["total_products"],
         low_stock_items=inventory_stats["low_stock_items"],
         critical_alerts=inventory_stats["critical_alerts"],
-        inventory_records=inventory_records
+        total_categories=inventory_stats["total_categories"],
+        fast_moving_products=movement_stats[
+            "fast_moving_products"
+        ],
+        slow_moving_products=movement_stats[
+            "slow_moving_products"
+        ],
+        reorder_alerts=reorder_alerts,
+        inventory_chart_data=inventory_chart_data
     )
+# ============================================================
+# SUSTAINABILITY / SDG DASHBOARD
+# ============================================================
+
+@app.route("/sustainability")
+@require_roles("owner", "inventory_manager")
+def sustainability():
+
+    try:
+
+        sustainability_data = (
+            get_sustainability_data(
+                LATEST_FILE
+            )
+        )
+
+        return render_template(
+            "sustainability.html",
+            data=sustainability_data
+        )
+
+    except Exception as error:
+
+        print(
+            "Sustainability dashboard error:",
+            error
+        )
+
+        return render_template(
+            "sustainability.html",
+            data={
+                "total_products": 0,
+                "total_categories": 0,
+                "low_stock": 0,
+                "critical": 0,
+                "fast_moving": 0,
+                "slow_moving": 0,
+                "inventory_efficiency": 0,
+                "stock_health_score": 0,
+                "demand_balance": 0,
+                "sdg8_score": 0,
+                "sdg9_score": 0,
+                "sdg12_score": 0,
+                "insights": [
+                    "Sustainability data could not be loaded."
+                ]
+            }
+        )
+# ============================================================
+# SALES ANALYTICS
+# ============================================================
+
+@app.route("/sales-analytics")
+@require_roles("owner", "inventory_manager")
+def sales_analytics():
+
+    try:
+
+        analytics_data = get_sales_analytics(
+            LATEST_FILE
+        )
+
+        return render_template(
+            "sales_analytics.html",
+            data=analytics_data
+        )
+
+    except Exception as error:
+
+        print(
+            "Sales analytics error:",
+            error
+        )
+
+        return render_template(
+            "sales_analytics.html",
+            data={
+                "total_sales": 0,
+                "total_profit": 0,
+                "total_quantity": 0,
+                "total_records": 0,
+                "average_sale": 0,
+                "profit_margin": 0,
+                "average_discount": 0,
+
+                "category_sales": [],
+                "category_profit": [],
+                "category_quantity": [],
+
+                "sales_trend": [],
+                "profit_trend": [],
+
+                "product_performance": [],
+
+                "best_sales_category": "N/A",
+                "best_sales_value": 0,
+
+                "best_profit_category": "N/A",
+                "best_profit_value": 0,
+
+                "top_product": "N/A",
+                "top_product_sales": 0,
+
+                "insights": [
+                    "Sales analytics data could not be loaded."
+                ]
+            }
+        )
+
+
+# ============================================================
+# ADD PRODUCT
+# ============================================================
+
+# ============================================================
+# ADD PRODUCT
+# ============================================================
+
+@app.route("/inventory/add", methods=["POST"])
+@require_roles("owner", "inventory_manager")
+def add_product():
+
+    try:
+
+        # --------------------------------------------------------
+        # INVENTORY DATASET
+        # IMPORTANT:
+        # Do NOT use LATEST_FILE here.
+        # LATEST_FILE is the sales/prediction dataset.
+        # --------------------------------------------------------
+
+        inventory_file = os.path.join(
+            "data",
+            "raw",
+            "inventory.csv"
+        )
+
+        if not os.path.exists(
+            inventory_file
+        ):
+
+            raise ValueError(
+                "Inventory dataset was not found."
+            )
+
+        # --------------------------------------------------------
+        # GET FORM DATA
+        # --------------------------------------------------------
+
+        product_id = request.form.get(
+            "product_id",
+            ""
+        ).strip()
+
+        product_name = request.form.get(
+            "product_name",
+            ""
+        ).strip()
+
+        category = request.form.get(
+            "category",
+            ""
+        ).strip()
+
+        current_stock = request.form.get(
+            "current_stock",
+            ""
+        ).strip()
+
+        reorder_level = request.form.get(
+            "reorder_level",
+            ""
+        ).strip()
+
+        unit_price = request.form.get(
+            "unit_price",
+            ""
+        ).strip()
+
+        supplier = request.form.get(
+            "supplier",
+            ""
+        ).strip()
+
+        # --------------------------------------------------------
+        # REQUIRED FIELD VALIDATION
+        # --------------------------------------------------------
+
+        if not all(
+            [
+                product_id,
+                product_name,
+                category,
+                current_stock,
+                reorder_level,
+                unit_price,
+                supplier
+            ]
+        ):
+
+            raise ValueError(
+                "Please fill in all product fields."
+            )
+
+        # --------------------------------------------------------
+        # LOAD INVENTORY CSV
+        # --------------------------------------------------------
+
+        inventory = pd.read_csv(
+            inventory_file
+        )
+
+        inventory.columns = (
+            inventory.columns
+            .astype(str)
+            .str.strip()
+        )
+
+        required_columns = [
+            "Product ID",
+            "Product Name",
+            "Category",
+            "Current Stock",
+            "Reorder Level",
+            "Unit Price",
+            "Supplier",
+            "Last Updated"
+        ]
+
+        missing_columns = [
+            column
+            for column in required_columns
+            if column not in inventory.columns
+        ]
+
+        if missing_columns:
+
+            raise ValueError(
+                "Inventory CSV is missing columns: "
+                +
+                ", ".join(
+                    missing_columns
+                )
+            )
+
+        # --------------------------------------------------------
+        # DUPLICATE PRODUCT CHECK
+        # --------------------------------------------------------
+
+        existing_ids = (
+            inventory["Product ID"]
+            .astype(str)
+            .str.strip()
+            .tolist()
+        )
+
+        if product_id in existing_ids:
+
+            raise ValueError(
+                f"Product ID '{product_id}' already exists."
+            )
+
+        # --------------------------------------------------------
+        # CONVERT NUMERIC VALUES
+        # --------------------------------------------------------
+
+        try:
+
+            stock = int(
+                current_stock
+            )
+
+            reorder = int(
+                reorder_level
+            )
+
+            price = float(
+                unit_price
+            )
+
+        except ValueError:
+
+            raise ValueError(
+                "Current Stock and Reorder Level "
+                "must be whole numbers, and Unit Price "
+                "must be a valid number."
+            )
+
+        # --------------------------------------------------------
+        # VALIDATE NUMERIC VALUES
+        # --------------------------------------------------------
+
+        if stock < 0:
+
+            raise ValueError(
+                "Current Stock cannot be negative."
+            )
+
+        if reorder < 0:
+
+            raise ValueError(
+                "Reorder Level cannot be negative."
+            )
+
+        if price < 0:
+
+            raise ValueError(
+                "Unit Price cannot be negative."
+            )
+
+        # --------------------------------------------------------
+        # CREATE NEW INVENTORY RECORD
+        # --------------------------------------------------------
+
+        new_product = {
+            "Product ID": product_id,
+            "Product Name": product_name,
+            "Category": category,
+            "Current Stock": stock,
+            "Reorder Level": reorder,
+            "Unit Price": price,
+            "Supplier": supplier,
+            "Last Updated": pd.Timestamp.now().strftime(
+                "%Y-%m-%d"
+            )
+        }
+
+        # --------------------------------------------------------
+        # ADD PRODUCT
+        # --------------------------------------------------------
+
+        inventory = pd.concat(
+            [
+                inventory,
+                pd.DataFrame(
+                    [new_product]
+                )
+            ],
+            ignore_index=True
+        )
+
+        # --------------------------------------------------------
+        # SAVE INVENTORY DATASET
+        # --------------------------------------------------------
+
+        inventory.to_csv(
+            inventory_file,
+            index=False
+        )
+
+        # --------------------------------------------------------
+        # RETURN TO INVENTORY DASHBOARD
+        # --------------------------------------------------------
+
+        return redirect(
+            url_for(
+                "inventory",
+                added="1"
+            )
+        )
+
+    except Exception as error:
+
+        return redirect(
+            url_for(
+                "inventory",
+                error=str(error)
+            )
+        )
+@app.route("/chatbot", methods=["POST"])
+@require_roles("owner", "inventory_manager")
+def chatbot():
+
+    try:
+
+        data = request.get_json() or {}
+
+        message = data.get("message", "").strip()
+
+        conversation = data.get("conversation", [])
+
+
+        # Check message
+
+        if not message:
+
+            return jsonify({
+                "success": False,
+                "error": "Please enter a message."
+            }), 400
+
+
+        # Ask Groq AI
+
+        response = ask_groq(
+            message,
+            conversation
+        )
+
+
+        # Return AI response
+
+        return jsonify({
+            "success": True,
+            "response": response
+        })
+
+
+    except Exception as error:
+
+        print(
+            "Chatbot route error:",
+            error
+        )
+
+        return jsonify({
+
+            "success": False,
+
+            "error":
+                "Something went wrong while "
+                "processing your request."
+
+        }), 500
+
 
 
 # ============================================================
@@ -591,6 +1040,40 @@ def prediction():
             from src.predict import predict_profit
 
             result = predict_profit(LATEST_FILE)
+
+            # ------------------------------------------------
+            # SAVE LATEST PREDICTION METRICS
+            # ------------------------------------------------
+
+            prediction_metrics_file = os.path.join(
+                app.root_path,
+                "static",
+                "uploads",
+                "prediction_metrics.json"
+            )
+
+            if isinstance(result, dict):
+
+                prediction_metrics = {
+                    "r2_score": result.get("r2_score"),
+                    "r2_percentage": result.get("r2_percentage"),
+                    "mae": result.get("mae"),
+                    "rmse": result.get("rmse"),
+                    "actual_profit": result.get("actual_profit"),
+                    "predicted_profit": result.get("predicted_profit")
+                }
+
+                with open(
+                    prediction_metrics_file,
+                    "w",
+                    encoding="utf-8"
+                ) as metrics_file:
+
+                    json.dump(
+                        prediction_metrics,
+                        metrics_file,
+                        indent=4
+                    )
 
 
             # --------------------------------

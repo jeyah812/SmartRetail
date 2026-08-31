@@ -18,6 +18,7 @@
     padding: 0;
 }
 
+
 /* ============================================================
    SIDEBAR
    ============================================================ */
@@ -47,6 +48,7 @@
     overflow-y: auto;
 }
 
+
 /* Logo */
 
 .sidebar-brand {
@@ -66,6 +68,7 @@
     font-size: 24px;
 }
 
+
 /* Navigation label */
 
 .sidebar-label {
@@ -77,11 +80,9 @@
 
     letter-spacing: 1.5px;
 
-    margin:
-
-        8px 10px
-        12px;
+    margin: 8px 10px 12px;
 }
+
 
 /* Navigation */
 
@@ -150,6 +151,7 @@
     border-left: 3px solid #1683ff;
 }
 
+
 /* ============================================================
    DATA STATUS
    ============================================================ */
@@ -202,6 +204,7 @@
         0 0 8px rgba(34,197,94,0.7);
 }
 
+
 /* ============================================================
    MAIN CONTENT
    ============================================================ */
@@ -213,6 +216,7 @@
 
     max-width: 1800px;
 }
+
 
 /* ============================================================
    HEADER
@@ -245,6 +249,7 @@
 
     font-size: 15px;
 }
+
 
 /* Actions */
 
@@ -280,6 +285,7 @@
     border-color: #1683ff;
 }
 
+
 /* Buttons */
 
 .icon-btn,
@@ -303,6 +309,7 @@
 
     color: white;
 }
+
 
 /* ============================================================
    DASHBOARD CARDS
@@ -330,13 +337,18 @@
 
     transition:
         transform 0.2s ease,
-        border-color 0.2s ease;
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .dashboard-card:hover {
     border-color:
         rgba(59,130,246,0.25);
+
+    box-shadow:
+        0 18px 42px rgba(0,0,0,0.25);
 }
+
 
 /* ============================================================
    KPI CARDS
@@ -374,6 +386,7 @@
     font-size: 12px;
 }
 
+
 /* ============================================================
    SECTION HEADERS
    ============================================================ */
@@ -395,91 +408,329 @@
 
     font-weight: 750;
 
-    margin-bottom: 18px;
+    margin-bottom: 20px;
 }
+
 
 /* ============================================================
-   CHARTS
+   PREMIUM ANALYTICS GRID
    ============================================================ */
 
-.chart-card {
-    margin-bottom: 22px;
+.analytics-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 22px;
+
 }
 
-.chart-container {
-    width: 100%;
+
+/* Chart Card */
+
+.chart-card {
+
+    margin: 0;
+
+    min-width: 0;
 
     overflow: hidden;
 
-    border-radius: 12px;
+    position: relative;
 
-    background: #ffffff;
 }
 
+
+/* Top accent */
+
+.chart-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+
+    left: 0;
+
+    right: 0;
+
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #6366f1,
+            #06b6d4
+        );
+
+    opacity: 0.9;
+
+}
+
+
+/* Chart header */
+
+.chart-card-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 17px;
+
+}
+
+
+.chart-icon {
+
+    width: 38px;
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6366f1,
+            #06b6d4
+        );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 7px 18px
+        rgba(59,130,246,0.18);
+
+}
+
+
+.chart-icon i {
+
+    font-size: 17px;
+
+}
+
+
+.chart-card-header h4 {
+
+    margin: 0 !important;
+
+    font-size: 17px;
+
+    font-weight: 700;
+
+    color: #f8fafc;
+
+}
+
+
+.chart-subtitle {
+
+    display: block;
+
+    margin-top: 2px;
+
+    color: #64748b;
+
+    font-size: 11px;
+
+    font-weight: 500;
+
+}
+
+
+/* Chart container */
+
+.chart-container {
+
+    width: 100%;
+
+    height: 300px;
+
+    overflow: hidden;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15,23,42,0.98),
+            rgba(17,31,55,0.98)
+        );
+
+    border:
+        1px solid
+        rgba(148,163,184,0.08);
+
+    padding: 10px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
 .dashboard-chart {
+
     display: block;
 
     width: 100%;
 
-    height: auto;
+    height: 100%;
 
-    border-radius: 12px;
+    object-fit: contain;
+
+    border-radius: 10px;
+
+    background: transparent;
+
 }
+
 
 /* ============================================================
    QUICK INSIGHTS
    ============================================================ */
 
-.insight-list,
-.activity-list {
+.quick-insights-card {
+
+    margin-top: 24px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(30,41,59,0.95),
+            rgba(20,31,50,0.95)
+        );
+
+    border:
+        1px solid
+        rgba(99,102,241,0.18);
+
+}
+
+
+.quick-insights-card h4 {
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    margin-bottom: 18px;
+
+}
+
+
+.quick-insights-card
+.insight-list {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    column-gap: 35px;
+
+}
+
+
+.insight-list {
+
     list-style: none;
 
     padding: 0;
 
     margin: 0;
+
 }
 
-.insight-list li,
-.activity-list li {
-    padding: 11px 0;
+
+.insight-list li {
+
+    padding: 13px 0;
 
     border-bottom:
-        1px solid rgba(255,255,255,0.06);
+        1px solid
+        rgba(255,255,255,0.06);
 
     color: #cbd5e1;
 
     font-size: 14px;
+
 }
 
-.insight-list li:last-child,
-.activity-list li:last-child {
+
+.insight-list li:last-child {
+
     border-bottom: none;
+
 }
+
 
 /* ============================================================
    DATASET ANALYSIS
    ============================================================ */
 
 .analysis-box {
-    background: rgba(255,255,255,0.035);
+
+    background:
+        rgba(255,255,255,0.035);
 
     border:
-        1px solid rgba(255,255,255,0.07);
+        1px solid
+        rgba(255,255,255,0.07);
 
     border-radius: 14px;
 
     padding: 18px;
 
     height: 100%;
+
+    transition: 0.2s ease;
+
 }
 
+
+.analysis-box:hover {
+
+    background:
+        rgba(255,255,255,0.055);
+
+    border-color:
+        rgba(99,102,241,0.20);
+
+    transform: translateY(-2px);
+
+}
+
+
 .analysis-box h5 {
+
     font-size: 15px;
 
     margin-bottom: 10px;
+
 }
 
+
 .analysis-box p {
+
     color: #94a3b8;
 
     font-size: 13px;
@@ -487,13 +738,53 @@
     line-height: 1.6;
 
     margin: 0;
+
 }
+
+
+/* ============================================================
+   ACTIVITY
+   ============================================================ */
+
+.activity-list {
+
+    list-style: none;
+
+    padding: 0;
+
+    margin: 0;
+
+}
+
+
+.activity-list li {
+
+    padding: 13px 0;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,0.06);
+
+    color: #cbd5e1;
+
+    font-size: 14px;
+
+}
+
+
+.activity-list li:last-child {
+
+    border-bottom: none;
+
+}
+
 
 /* ============================================================
    AI ADVISOR
    ============================================================ */
 
 .ai-card {
+
     background:
         linear-gradient(
             135deg,
@@ -502,13 +793,18 @@
         );
 
     border:
-        1px solid rgba(99,102,241,0.45);
+        1px solid
+        rgba(99,102,241,0.45);
 
     box-shadow:
-        0 20px 50px rgba(30,41,120,0.22);
+        0 20px 50px
+        rgba(30,41,120,0.22);
+
 }
 
+
 .ai-header {
+
     display: flex;
 
     justify-content: space-between;
@@ -516,27 +812,34 @@
     align-items: center;
 
     gap: 20px;
+
 }
 
+
 .ai-title {
+
     font-size: 25px;
 
     font-weight: 800;
 
     margin: 0;
+
 }
 
+
 .ai-description {
+
     color: #a5b4fc;
 
     margin-top: 7px;
 
     font-size: 13px;
+
 }
 
-/* AI generated HTML */
 
 .ai-advice {
+
     margin-top: 25px;
 
     color: #e2e8f0;
@@ -544,9 +847,12 @@
     line-height: 1.7;
 
     font-size: 14px;
+
 }
 
+
 .ai-advice h3 {
+
     color: #ffffff;
 
     font-size: 18px;
@@ -558,34 +864,50 @@
     padding-bottom: 8px;
 
     border-bottom:
-        1px solid rgba(255,255,255,0.10);
+        1px solid
+        rgba(255,255,255,0.10);
+
 }
+
 
 .ai-advice h3:first-child {
+
     margin-top: 0;
+
 }
 
+
 .ai-advice ul {
+
     padding-left: 20px;
 
     margin-bottom: 20px;
+
 }
 
+
 .ai-advice li {
+
     margin-bottom: 9px;
 
     color: #cbd5e1;
+
 }
 
+
 .ai-advice strong {
+
     color: #ffffff;
+
 }
+
 
 /* ============================================================
    AI BUTTON
    ============================================================ */
 
 .btn-gradient {
+
     border: 0;
 
     border-radius: 10px;
@@ -606,28 +928,37 @@
     text-decoration: none;
 
     transition: 0.2s ease;
+
 }
 
+
 .btn-gradient:hover {
+
     color: white;
 
     transform: translateY(-1px);
 
     box-shadow:
-        0 8px 20px rgba(59,130,246,0.25);
+        0 8px 20px
+        rgba(59,130,246,0.25);
+
 }
+
 
 /* ============================================================
    EMPTY STATE
    ============================================================ */
 
 .empty-state {
+
     text-align: center;
 
     padding: 55px 20px;
 
     color: #94a3b8;
+
 }
+
 
 /* ============================================================
    MOBILE
@@ -636,6 +967,7 @@
 @media (max-width: 991px) {
 
     .smart-sidebar {
+
         position: relative;
 
         width: 100%;
@@ -645,60 +977,162 @@
         border-right: none;
 
         border-bottom:
-            1px solid rgba(255,255,255,0.08);
+            1px solid
+            rgba(255,255,255,0.08);
 
         padding: 15px;
+
     }
+
 
     .sidebar-brand {
+
         padding-bottom: 15px;
+
     }
 
+
     .sidebar-nav {
+
         display: flex;
 
         flex-wrap: wrap;
 
         gap: 5px;
+
     }
+
 
     .sidebar-nav li {
+
         margin: 0;
+
     }
+
 
     .sidebar-nav a {
+
         padding: 9px 11px;
+
     }
+
 
     .sidebar-status {
+
         display: none;
+
     }
 
+
     .dashboard-main {
+
         margin-left: 0;
 
         padding: 25px 18px 50px;
+
     }
+
 
     .dashboard-header {
+
         flex-direction: column;
 
         align-items: flex-start;
+
     }
+
 
     .dashboard-actions {
+
         width: 100%;
+
     }
+
 
     .search-box {
+
         width: 100%;
+
     }
 
+
+    .analytics-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .chart-container {
+
+        height: 280px;
+
+    }
+
+
+    .quick-insights-card
+    .insight-list {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
     .ai-header {
+
         flex-direction: column;
 
         align-items: flex-start;
+
     }
+
+}
+
+
+/* ============================================================
+   EXTRA SMALL DEVICES
+   ============================================================ */
+
+@media (max-width: 575px) {
+
+    .dashboard-title {
+
+        font-size: 27px;
+
+    }
+
+
+    .dashboard-subtitle {
+
+        font-size: 13px;
+
+    }
+
+
+    .dashboard-card {
+
+        padding: 18px;
+
+        border-radius: 15px;
+
+    }
+
+
+    .chart-container {
+
+        height: 250px;
+
+        padding: 6px;
+
+    }
+
+
+    .kpi-value {
+
+        font-size: 25px;
+
+    }
+
 }
 
 </style>
@@ -706,11 +1140,13 @@
 
 <div class="owner-dashboard">
 
+
     <!-- ========================================================
          SIDEBAR
          ======================================================== -->
 
     <aside class="smart-sidebar">
+
 
         <div class="sidebar-brand">
 
@@ -727,6 +1163,7 @@
 
 
         <ul class="sidebar-nav">
+
 
             <li>
 
@@ -785,6 +1222,19 @@
 
             <li>
 
+                <a href="{{ url_for('sustainability') }}">
+
+                    <i class="bi bi-leaf-fill"></i>
+
+                    <span>Sustainability</span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
                 <a href="#dataset">
 
                     <i class="bi bi-database-fill"></i>
@@ -821,6 +1271,7 @@
 
             </li>
 
+
         </ul>
 
 
@@ -839,6 +1290,7 @@
             </div>
 
         </div>
+
 
     </aside>
 
@@ -860,7 +1312,9 @@
             style="margin-top: 0;"
         >
 
+
             <div class="dashboard-header">
+
 
                 <div>
 
@@ -869,14 +1323,17 @@
                     </h1>
 
                     <p class="dashboard-subtitle">
+
                         Welcome back! Here's your SmartRetail
                         business intelligence summary.
+
                     </p>
 
                 </div>
 
 
                 <div class="dashboard-actions">
+
 
                     <input
                         type="text"
@@ -910,13 +1367,15 @@
 
                     </button>
 
+
                 </div>
+
 
             </div>
 
 
             <!-- ==================================================
-                 KPI CARDS
+                 BUSINESS KPI CARDS
                  ================================================== -->
 
             <div class="row g-4">
@@ -931,7 +1390,9 @@
                         </div>
 
                         <h2 class="kpi-value">
-                            ${{ "{:,.2f}".format(stats.total_sales) }}
+
+                            ₹{{ "{:,.2f}".format(stats.total_sales) }}
+
                         </h2>
 
                         <span class="kpi-note">
@@ -952,7 +1413,9 @@
                         </div>
 
                         <h2 class="kpi-value">
-                            ${{ "{:,.2f}".format(stats.total_profit) }}
+
+                            ₹{{ "{:,.2f}".format(stats.total_profit) }}
+
                         </h2>
 
                         <span class="kpi-note">
@@ -973,7 +1436,9 @@
                         </div>
 
                         <h2 class="kpi-value">
+
                             {{ stats.total_orders }}
+
                         </h2>
 
                         <span class="kpi-note">
@@ -994,33 +1459,51 @@
                         </div>
 
                         <h2 class="kpi-value">
-                            {% if stats.r2_percentage is defined and stats.r2_percentage is not none %}
-                                {{ "{:.2f}".format(stats.r2_percentage) }}%
+
+                            {% if stats.r2_percentage is defined
+                                  and stats.r2_percentage is not none %}
+
+                                {{ "{:.2f}".format(
+                                    stats.r2_percentage
+                                ) }}%
+
                             {% else %}
+
                                 --
+
                             {% endif %}
+
                         </h2>
 
                         <span class="kpi-note">
-                            {% if stats.model_name is defined and stats.model_name %}
+
+                            {% if stats.model_name is defined
+                                  and stats.model_name %}
+
                                 {{ stats.model_name }}
+
                             {% else %}
+
                                 Predictive model
+
                             {% endif %}
+
                         </span>
 
                     </div>
 
                 </div>
 
+
             </div>
 
 
             <!-- ==================================================
-                 INVENTORY KPIs
+                 INVENTORY KPI CARDS
                  ================================================== -->
 
             <div class="row g-4 mt-1">
+
 
                 <div class="col-xl-4 col-md-6">
 
@@ -1031,7 +1514,9 @@
                         </div>
 
                         <h2 class="kpi-value">
+
                             {{ inventory_stats.total_products }}
+
                         </h2>
 
                         <span class="kpi-note">
@@ -1052,7 +1537,9 @@
                         </div>
 
                         <h2 class="kpi-value">
+
                             {{ inventory_stats.low_stock_items }}
+
                         </h2>
 
                         <span class="kpi-note">
@@ -1073,7 +1560,9 @@
                         </div>
 
                         <h2 class="kpi-value">
+
                             {{ inventory_stats.critical_alerts }}
+
                         </h2>
 
                         <span class="kpi-note">
@@ -1084,7 +1573,9 @@
 
                 </div>
 
+
             </div>
+
 
         </section>
 
@@ -1098,6 +1589,7 @@
             class="dashboard-section"
         >
 
+
             <h2 class="section-heading">
 
                 📊
@@ -1107,124 +1599,172 @@
             </h2>
 
 
-            <div class="row g-4">
+            <!-- ==================================================
+                 CHART GRID
+                 ================================================== -->
 
-                {% if charts %}
+            {% if charts %}
+
+
+                <div class="analytics-grid">
+
 
                     {% for chart in charts %}
 
-                        <div class="col-xl-8 col-lg-7">
 
-                            <div class="dashboard-card chart-card">
+                        <div class="dashboard-card chart-card">
 
-                                <h4 class="mb-4">
-                                    📊 {{ chart.title }}
-                                </h4>
 
-                                <div class="chart-container">
+                            <div class="chart-card-header">
 
-                                    <img
-                                        src="{{ url_for(
-                                            'static',
-                                            filename='images/' + chart.image
-                                        ) }}"
-                                        class="dashboard-chart"
-                                        alt="{{ chart.title }}"
-                                    >
+
+                                <div class="chart-icon">
+
+                                    <i class="bi bi-bar-chart-fill"></i>
 
                                 </div>
 
+
+                                <div>
+
+                                    <h4>
+                                        {{ chart.title }}
+                                    </h4>
+
+                                    <span class="chart-subtitle">
+                                        Dynamic dataset analysis
+                                    </span>
+
+                                </div>
+
+
                             </div>
 
+
+                            <div class="chart-container">
+
+
+                                <img
+                                    src="{{ url_for(
+                                        'static',
+                                        filename='images/' + chart.image
+                                    ) }}"
+                                    class="dashboard-chart"
+                                    alt="{{ chart.title }}"
+                                >
+
+
+                            </div>
+
+
                         </div>
+
 
                     {% endfor %}
 
-                {% else %}
-
-                    <div class="col-12">
-
-                        <div class="dashboard-card empty-state">
-
-                            <h4>
-                                📊 No Analysis Available
-                            </h4>
-
-                            <p>
-                                Upload a dataset from the
-                                Prediction page to generate
-                                dashboard analytics.
-                            </p>
-
-                            <a
-                                href="{{ url_for('prediction') }}"
-                                class="btn-gradient"
-                            >
-                                Upload Dataset
-                            </a>
-
-                        </div>
-
-                    </div>
-
-                {% endif %}
-
-
-                <!-- QUICK INSIGHTS -->
-
-                <div class="col-xl-4 col-lg-5">
-
-                    <div class="dashboard-card">
-
-                        <h4 class="mb-4">
-                            💡 Quick Insights
-                        </h4>
-
-                        <ul class="insight-list">
-
-                            <li>
-                                📈 Dataset analyzed successfully
-                            </li>
-
-                            <li>
-                                💰 Profit information available
-                            </li>
-
-                            <li>
-                                🤖 Predictive model available
-                            </li>
-
-                            <li>
-                                📊 Dynamic charts generated
-                            </li>
-
-                            <li>
-                                🧠 AI recommendations generated
-                            </li>
-
-                            <li>
-                                📦 Inventory status monitored
-                            </li>
-
-                        </ul>
-
-                    </div>
 
                 </div>
 
+
+            {% else %}
+
+
+                <div class="dashboard-card empty-state">
+
+
+                    <h4>
+                        📊 No Analysis Available
+                    </h4>
+
+
+                    <p>
+
+                        Upload a dataset from the
+                        Prediction page to generate
+                        dashboard analytics.
+
+                    </p>
+
+
+                    <a
+                        href="{{ url_for('prediction') }}"
+                        class="btn-gradient"
+                    >
+
+                        Upload Dataset
+
+                    </a>
+
+
+                </div>
+
+
+            {% endif %}
+
+
+            <!-- ==================================================
+                 QUICK INSIGHTS
+                 ================================================== -->
+
+            <div class="dashboard-card quick-insights-card">
+
+
+                <h4>
+                    💡 Quick Insights
+                </h4>
+
+
+                <ul class="insight-list">
+
+
+                    <li>
+                        📈 Dataset analyzed successfully
+                    </li>
+
+
+                    <li>
+                        💰 Profit information available
+                    </li>
+
+
+                    <li>
+                        🤖 Predictive model available
+                    </li>
+
+
+                    <li>
+                        📊 Dynamic charts generated
+                    </li>
+
+
+                    <li>
+                        🧠 AI recommendations generated
+                    </li>
+
+
+                    <li>
+                        📦 Inventory status monitored
+                    </li>
+
+
+                </ul>
+
+
             </div>
+
 
         </section>
 
 
         <!-- ====================================================
-             DATASET
+             DATASET ANALYSIS
              ==================================================== -->
 
         <section
             id="dataset"
             class="dashboard-section"
         >
+
 
             <h2 class="section-heading">
 
@@ -1236,6 +1776,7 @@
 
 
             <div class="dashboard-card">
+
 
                 <p class="text-secondary">
 
@@ -1258,9 +1799,11 @@
                             </h5>
 
                             <p>
+
                                 Time-based trends are generated
                                 automatically when date information
                                 is available.
+
                             </p>
 
                         </div>
@@ -1277,9 +1820,11 @@
                             </h5>
 
                             <p>
+
                                 Numeric columns are analyzed using
                                 distributions and comparative
                                 visualizations.
+
                             </p>
 
                         </div>
@@ -1296,9 +1841,11 @@
                             </h5>
 
                             <p>
+
                                 Categorical columns are analyzed
                                 to identify important groups,
                                 products and patterns.
+
                             </p>
 
                         </div>
@@ -1308,7 +1855,9 @@
 
                 </div>
 
+
             </div>
+
 
         </section>
 
@@ -1322,6 +1871,7 @@
             class="dashboard-section"
         >
 
+
             <h2 class="section-heading">
 
                 🕒
@@ -1333,31 +1883,40 @@
 
             <div class="dashboard-card">
 
+
                 <ul class="activity-list">
+
 
                     <li>
                         ✔ Dataset uploaded
                     </li>
 
+
                     <li>
                         ✔ Dataset validated
                     </li>
+
 
                     <li>
                         ✔ ML prediction generated
                     </li>
 
+
                     <li>
                         ✔ Dashboard charts generated
                     </li>
+
 
                     <li>
                         ✔ AI recommendations generated
                     </li>
 
+
                 </ul>
 
+
             </div>
+
 
         </section>
 
@@ -1371,9 +1930,12 @@
             class="dashboard-section"
         >
 
+
             <div class="dashboard-card ai-card">
 
+
                 <div class="ai-header">
+
 
                     <div>
 
@@ -1381,9 +1943,12 @@
                             🤖 SmartRetail AI Advisor
                         </h2>
 
+
                         <p class="ai-description">
+
                             Personalized recommendations based
                             on the latest business performance.
+
                         </p>
 
                     </div>
@@ -1398,10 +1963,14 @@
                             .scrollIntoView({
                                 behavior: 'smooth'
                             });
+                            return false;
                         "
                     >
+
                         View Recommendations
+
                     </a>
+
 
                 </div>
 
@@ -1414,13 +1983,8 @@
                 >
 
 
-                <!-- IMPORTANT:
-                     DO NOT PUT THIS INSIDE <pre>.
-                     The Flask backend already converts
-                     Markdown into HTML.
-                -->
-
                 <div class="ai-advice">
+
 
                     {% if advice %}
 
@@ -1429,20 +1993,26 @@
                     {% else %}
 
                         <p>
+
                             Upload a dataset to receive
                             AI-powered business recommendations.
+
                         </p>
 
                     {% endif %}
 
+
                 </div>
 
+
             </div>
+
 
         </section>
 
 
     </main>
+
 
 </div>
 
@@ -1457,14 +2027,16 @@ document.addEventListener(
     "DOMContentLoaded",
     function () {
 
-        /* ================================================
+
+        /* ==================================================
            SIDEBAR ACTIVE STATE
-           ================================================ */
+           ================================================== */
 
         const navLinks =
             document.querySelectorAll(
                 ".sidebar-nav a[href^='#']"
             );
+
 
         navLinks.forEach(
             function (link) {
@@ -1483,6 +2055,7 @@ document.addEventListener(
                             }
                         );
 
+
                         this.classList.add(
                             "active"
                         );
@@ -1494,14 +2067,15 @@ document.addEventListener(
         );
 
 
-        /* ================================================
+        /* ==================================================
            NOTIFICATION BUTTON
-           ================================================ */
+           ================================================== */
 
         const activityButton =
             document.getElementById(
                 "activityButton"
             );
+
 
         if (activityButton) {
 
@@ -1513,6 +2087,7 @@ document.addEventListener(
                         document.getElementById(
                             "activity"
                         );
+
 
                     if (activity) {
 
@@ -1528,14 +2103,15 @@ document.addEventListener(
         }
 
 
-        /* ================================================
+        /* ==================================================
            DASHBOARD SEARCH
-           ================================================ */
+           ================================================== */
 
         const search =
             document.getElementById(
                 "dashboardSearch"
             );
+
 
         if (search) {
 
@@ -1548,13 +2124,16 @@ document.addEventListener(
                         .toLowerCase()
                         .trim();
 
+
                     const sections =
                         document.querySelectorAll(
                             ".dashboard-section"
                         );
 
+
                     sections.forEach(
                         function (section) {
+
 
                             if (!query) {
 
@@ -1565,10 +2144,12 @@ document.addEventListener(
 
                             }
 
+
                             const text =
                                 section
                                 .innerText
                                 .toLowerCase();
+
 
                             section.style.display =
                                 text.includes(query)
@@ -1584,14 +2165,15 @@ document.addEventListener(
         }
 
 
-        /* ================================================
+        /* ==================================================
            ACTIVE SECTION ON SCROLL
-           ================================================ */
+           ================================================== */
 
         const sections =
             document.querySelectorAll(
                 ".dashboard-section"
             );
+
 
         const observer =
             new IntersectionObserver(
@@ -1607,12 +2189,14 @@ document.addEventListener(
                                 const id =
                                     entry.target.id;
 
+
                                 navLinks.forEach(
                                     function (link) {
 
                                         link.classList.remove(
                                             "active"
                                         );
+
 
                                         if (
                                             link.getAttribute(
@@ -1650,6 +2234,7 @@ document.addEventListener(
 
             }
         );
+
 
     }
 );

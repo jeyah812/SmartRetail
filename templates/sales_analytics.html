@@ -1,0 +1,846 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+
+.sales-page {
+    padding: 60px 0 100px;
+}
+
+.sales-header {
+    margin-bottom: 45px;
+}
+
+.sales-badge {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 30px;
+    background: rgba(0, 200, 255, 0.10);
+    border: 1px solid rgba(0, 200, 255, 0.30);
+    color: #00d9ff;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.sales-header h1 {
+    font-size: 48px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.sales-header p {
+    color: #9aa9c2;
+    font-size: 17px;
+}
+
+.sales-kpi {
+    background: #1b263b;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 28px;
+    height: 100%;
+    transition: 0.25s;
+}
+
+.sales-kpi:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 217, 255, 0.35);
+}
+
+.sales-kpi-label {
+    color: #9aa9c2;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.sales-kpi-value {
+    color: #ffffff;
+    font-size: 32px;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.sales-kpi-sub {
+    color: #73839c;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.sales-card {
+    background: #1b263b;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 28px;
+    height: 100%;
+}
+
+.sales-card h3 {
+    color: #ffffff;
+    font-size: 21px;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.chart-container {
+    position: relative;
+    height: 330px;
+}
+
+.insight-item {
+    background: #111b2e;
+    border-radius: 12px;
+    padding: 15px 18px;
+    margin-bottom: 12px;
+    color: #dce5f2;
+}
+
+.insight-item i {
+    color: #20d080;
+    margin-right: 10px;
+}
+
+.performance-table {
+    width: 100%;
+    color: #ffffff;
+}
+
+.performance-table th {
+    color: #8fa1bb;
+    font-size: 12px;
+    text-transform: uppercase;
+    padding: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.performance-table td {
+    padding: 15px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.performance-table tr:last-child td {
+    border-bottom: none;
+}
+
+.product-name {
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.money {
+    color: #7ee7ff;
+    font-weight: 600;
+}
+
+.profit {
+    color: #61df9b;
+    font-weight: 600;
+}
+
+</style>
+
+
+<div class="container sales-page">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="sales-header">
+
+        <div class="sales-badge">
+            <i class="bi bi-bar-chart-fill"></i>
+            Sales Intelligence
+        </div>
+
+        <h1>Sales Analytics</h1>
+
+        <p>
+            Analyze revenue, profitability, product performance,
+            and sales trends using your latest retail data.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         KPI CARDS
+    ====================================================== -->
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="sales-kpi">
+
+                <div class="sales-kpi-label">
+                    <i class="bi bi-currency-rupee"></i>
+                    Total Sales
+                </div>
+
+                <div class="sales-kpi-value">
+                    ₹{{ "{:,.2f}".format(data.total_sales) }}
+                </div>
+
+                <div class="sales-kpi-sub">
+                    Overall revenue generated
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="sales-kpi">
+
+                <div class="sales-kpi-label">
+                    <i class="bi bi-graph-up-arrow"></i>
+                    Total Profit
+                </div>
+
+                <div class="sales-kpi-value">
+                    ₹{{ "{:,.2f}".format(data.total_profit) }}
+                </div>
+
+                <div class="sales-kpi-sub">
+                    Profit generated
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="sales-kpi">
+
+                <div class="sales-kpi-label">
+                    <i class="bi bi-box-seam"></i>
+                    Quantity Sold
+                </div>
+
+                <div class="sales-kpi-value">
+                    {{ data.total_quantity }}
+                </div>
+
+                <div class="sales-kpi-sub">
+                    Total units sold
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="sales-kpi">
+
+                <div class="sales-kpi-label">
+                    <i class="bi bi-percent"></i>
+                    Profit Margin
+                </div>
+
+                <div class="sales-kpi-value">
+                    {{ data.profit_margin }}%
+                </div>
+
+                <div class="sales-kpi-sub">
+                    Overall profitability
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SECONDARY KPIs
+    ====================================================== -->
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-lg-4 col-md-6">
+
+            <div class="sales-kpi">
+
+                <div class="sales-kpi-label">
+                    Average Sale
+                </div>
+
+                <div class="sales-kpi-value">
+                    ₹{{ "{:,.2f}".format(data.average_sale) }}
+                </div>
+
+                <div class="sales-kpi-sub">
+                    Average revenue per record
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4 col-md-6">
+
+            <div class="sales-kpi">
+
+                <div class="sales-kpi-label">
+                    Best Sales Category
+                </div>
+
+                <div class="sales-kpi-value"
+                     style="font-size:26px;">
+                    {{ data.best_sales_category }}
+                </div>
+
+                <div class="sales-kpi-sub">
+                    ₹{{ "{:,.2f}".format(data.best_sales_value) }}
+                    in sales
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4 col-md-6">
+
+            <div class="sales-kpi">
+
+                <div class="sales-kpi-label">
+                    Top Product
+                </div>
+
+                <div class="sales-kpi-value"
+                     style="font-size:26px;">
+                    {{ data.top_product }}
+                </div>
+
+                <div class="sales-kpi-sub">
+                    ₹{{ "{:,.2f}".format(data.top_product_sales) }}
+                    in sales
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SALES TREND
+    ====================================================== -->
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-12">
+
+            <div class="sales-card">
+
+                <h3>
+                    <i class="bi bi-activity"></i>
+                    Sales Trend
+                </h3>
+
+                <div class="chart-container">
+
+                    <canvas id="salesTrendChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CATEGORY CHARTS
+    ====================================================== -->
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-lg-6">
+
+            <div class="sales-card">
+
+                <h3>
+                    <i class="bi bi-pie-chart"></i>
+                    Sales by Category
+                </h3>
+
+                <div class="chart-container">
+
+                    <canvas id="categorySalesChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-6">
+
+            <div class="sales-card">
+
+                <h3>
+                    <i class="bi bi-bar-chart"></i>
+                    Profit by Category
+                </h3>
+
+                <div class="chart-container">
+
+                    <canvas id="categoryProfitChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PRODUCT PERFORMANCE
+    ====================================================== -->
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-12">
+
+            <div class="sales-card">
+
+                <h3>
+                    <i class="bi bi-trophy"></i>
+                    Top Performing Products
+                </h3>
+
+                <div class="table-responsive">
+
+                    <table class="performance-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Product</th>
+
+                                <th>Sales</th>
+
+                                <th>Profit</th>
+
+                                <th>Quantity</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for product in data.product_performance %}
+
+                            <tr>
+
+                                <td class="product-name">
+                                    {{ product.product }}
+                                </td>
+
+                                <td class="money">
+                                    ₹{{ "{:,.2f}".format(product.sales) }}
+                                </td>
+
+                                <td class="profit">
+                                    ₹{{ "{:,.2f}".format(product.profit) }}
+                                </td>
+
+                                <td>
+                                    {{ product.quantity }}
+                                </td>
+
+                            </tr>
+
+                            {% else %}
+
+                            <tr>
+
+                                <td colspan="4">
+                                    No product performance data available.
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         BUSINESS INSIGHTS
+    ====================================================== -->
+
+    <div class="row g-4">
+
+        <div class="col-12">
+
+            <div class="sales-card">
+
+                <h3>
+                    <i class="bi bi-lightbulb"></i>
+                    Business Insights
+                </h3>
+
+                {% for insight in data.insights %}
+
+                <div class="insight-item">
+
+                    <i class="bi bi-check-circle-fill"></i>
+
+                    {{ insight }}
+
+                </div>
+
+                {% else %}
+
+                <div class="insight-item">
+                    No insights available.
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     CHART DATA
+========================================================= -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const salesTrend =
+            {{ data.sales_trend | tojson }};
+
+        const categorySales =
+            {{ data.category_sales | tojson }};
+
+        const categoryProfit =
+            {{ data.category_profit | tojson }};
+
+
+        /* ==================================================
+           SALES TREND
+        ================================================== */
+
+        const salesTrendCanvas =
+            document.getElementById(
+                "salesTrendChart"
+            );
+
+        if (salesTrendCanvas) {
+
+            new Chart(
+                salesTrendCanvas,
+                {
+                    type: "line",
+
+                    data: {
+
+                        labels:
+                            salesTrend.map(
+                                item => item.date
+                            ),
+
+                        datasets: [
+
+                            {
+                                label: "Sales (₹)",
+
+                                data:
+                                    salesTrend.map(
+                                        item => item.sales
+                                    ),
+
+                                tension: 0.35,
+
+                                fill: true,
+
+                                borderWidth: 3,
+
+                                pointRadius: 4
+                            }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        plugins: {
+
+                            legend: {
+                                labels: {
+                                    color: "#dce5f2"
+                                }
+                            }
+
+                        },
+
+                        scales: {
+
+                            x: {
+
+                                ticks: {
+                                    color: "#8fa1bb"
+                                },
+
+                                grid: {
+                                    color:
+                                        "rgba(255,255,255,0.05)"
+                                }
+
+                            },
+
+                            y: {
+
+                                ticks: {
+                                    color: "#8fa1bb",
+
+                                    callback:
+                                        function(value) {
+                                            return "₹" +
+                                                value.toLocaleString();
+                                        }
+                                },
+
+                                grid: {
+                                    color:
+                                        "rgba(255,255,255,0.05)"
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* ==================================================
+           SALES BY CATEGORY
+        ================================================== */
+
+        const categorySalesCanvas =
+            document.getElementById(
+                "categorySalesChart"
+            );
+
+        if (categorySalesCanvas) {
+
+            new Chart(
+                categorySalesCanvas,
+                {
+                    type: "doughnut",
+
+                    data: {
+
+                        labels:
+                            categorySales.map(
+                                item => item.category
+                            ),
+
+                        datasets: [
+
+                            {
+                                label: "Sales",
+
+                                data:
+                                    categorySales.map(
+                                        item => item.sales
+                                    ),
+
+                                borderWidth: 2
+                            }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        plugins: {
+
+                            legend: {
+
+                                position: "bottom",
+
+                                labels: {
+                                    color: "#dce5f2"
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* ==================================================
+           PROFIT BY CATEGORY
+        ================================================== */
+
+        const categoryProfitCanvas =
+            document.getElementById(
+                "categoryProfitChart"
+            );
+
+        if (categoryProfitCanvas) {
+
+            new Chart(
+                categoryProfitCanvas,
+                {
+                    type: "bar",
+
+                    data: {
+
+                        labels:
+                            categoryProfit.map(
+                                item => item.category
+                            ),
+
+                        datasets: [
+
+                            {
+                                label: "Profit (₹)",
+
+                                data:
+                                    categoryProfit.map(
+                                        item => item.profit
+                                    ),
+
+                                borderWidth: 1
+                            }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        plugins: {
+
+                            legend: {
+
+                                labels: {
+                                    color: "#dce5f2"
+                                }
+
+                            }
+
+                        },
+
+                        scales: {
+
+                            x: {
+
+                                ticks: {
+                                    color: "#8fa1bb"
+                                },
+
+                                grid: {
+                                    color:
+                                        "rgba(255,255,255,0.05)"
+                                }
+
+                            },
+
+                            y: {
+
+                                beginAtZero: true,
+
+                                ticks: {
+
+                                    color: "#8fa1bb",
+
+                                    callback:
+                                        function(value) {
+                                            return "₹" +
+                                                value.toLocaleString();
+                                        }
+
+                                },
+
+                                grid: {
+                                    color:
+                                        "rgba(255,255,255,0.05)"
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+{% endblock %}

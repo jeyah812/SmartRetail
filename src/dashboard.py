@@ -562,9 +562,7 @@ def find_date_columns(df):
 
 def generate_dashboard_charts(file_path):
 
-    df = load_dataset(
-        file_path
-    )
+    df = load_dataset(file_path)
 
     os.makedirs(
         CHART_FOLDER,
@@ -573,16 +571,103 @@ def generate_dashboard_charts(file_path):
 
     charts = []
 
+
+    # ========================================================
+    # SMARTRETAIL CHART STYLE
+    # ========================================================
+
+    # Dark dashboard background
+    BG_COLOR = "#0f172a"
+
+    # Card/chart background
+    AXES_COLOR = "#111f37"
+
+    # Text
+    TEXT_COLOR = "#e2e8f0"
+    MUTED_COLOR = "#94a3b8"
+
+    # SmartRetail accents
+    PRIMARY_COLOR = "#38bdf8"
+    SECONDARY_COLOR = "#818cf8"
+    SUCCESS_COLOR = "#34d399"
+
+
+    # ========================================================
+    # COMMON STYLE FUNCTION
+    # ========================================================
+
+    def style_chart(ax):
+
+        ax.set_facecolor(
+            AXES_COLOR
+        )
+
+        ax.tick_params(
+            colors=MUTED_COLOR,
+            labelsize=9
+        )
+
+        ax.xaxis.label.set_color(
+            MUTED_COLOR
+        )
+
+        ax.yaxis.label.set_color(
+            MUTED_COLOR
+        )
+
+        ax.title.set_color(
+            TEXT_COLOR
+        )
+
+        ax.grid(
+            True,
+            axis="y",
+            alpha=0.12,
+            linewidth=0.8
+        )
+
+        ax.set_axisbelow(
+            True
+        )
+
+
+        # Remove unnecessary borders
+
+        for spine in ax.spines.values():
+
+            spine.set_visible(
+                False
+            )
+
+
+    # ========================================================
+    # FORMAT RUPEE VALUES
+    # ========================================================
+
+    def format_rupee(value):
+
+        return (
+            "₹"
+            + f"{value:,.0f}"
+        )
+
+
     # ========================================================
     # REMOVE OLD CHARTS
     # ========================================================
 
     old_charts = [
+
         "time_series.png",
+
         "category_chart.png",
+
         "distribution_chart.png",
+
         "numeric_distribution.png"
+
     ]
+
 
     for filename in old_charts:
 
@@ -591,7 +676,9 @@ def generate_dashboard_charts(file_path):
             filename
         )
 
-        if os.path.exists(filepath):
+        if os.path.exists(
+            filepath
+        ):
 
             try:
 
@@ -603,24 +690,29 @@ def generate_dashboard_charts(file_path):
 
                 pass
 
+
     # ========================================================
     # NUMERIC COLUMNS
     # ========================================================
 
     numeric_columns = (
+
         df
         .select_dtypes(
             include=["number"]
         )
         .columns
         .tolist()
+
     )
+
 
     # ========================================================
     # CATEGORICAL COLUMNS
     # ========================================================
 
     categorical_columns = (
+
         df
         .select_dtypes(
             include=[
@@ -630,7 +722,9 @@ def generate_dashboard_charts(file_path):
         )
         .columns
         .tolist()
+
     )
+
 
     # ========================================================
     # DATE COLUMNS
@@ -640,109 +734,264 @@ def generate_dashboard_charts(file_path):
         find_date_columns(df)
     )
 
+
     # ========================================================
     # CHART 1 — SALES OVER TIME
     # ========================================================
 
     if (
         date_columns
-        and "Sales" in df.columns
+        and
+        "Sales" in df.columns
     ):
 
         date_col = (
+
             "Order Date"
+
             if "Order Date"
             in date_columns
+
             else date_columns[0]
+
         )
+
 
         date_series = pd.to_datetime(
+
             df[date_col],
+
             errors="coerce",
+
             format="mixed"
+
         )
 
+
         sales_series = pd.to_numeric(
+
             df["Sales"],
+
             errors="coerce"
+
         )
+
 
         temp = pd.DataFrame({
 
-            "date": date_series,
+            "date":
+                date_series,
 
-            "sales": sales_series
+            "sales":
+                sales_series
 
         })
 
+
         temp = temp.dropna(
+
             subset=[
                 "date",
                 "sales"
             ]
+
         )
+
 
         if not temp.empty:
 
             monthly = (
+
                 temp
                 .groupby(
+
                     temp["date"]
                     .dt
                     .to_period("M")
+
                 )["sales"]
                 .sum()
+
             )
+
 
             if not monthly.empty:
 
-                plt.figure(
-                    figsize=(9, 4.5)
+                fig, ax = plt.subplots(
+
+                    figsize=(9, 4.8),
+
+                    facecolor=BG_COLOR
+
                 )
 
-                plt.plot(
+
+                ax.set_facecolor(
+                    AXES_COLOR
+                )
+
+
+                ax.plot(
+
                     monthly.index.astype(str),
+
                     monthly.values,
+
+                    color=PRIMARY_COLOR,
+
                     marker="o",
-                    linewidth=3
+
+                    markersize=5,
+
+                    markerfacecolor=PRIMARY_COLOR,
+
+                    markeredgecolor=BG_COLOR,
+
+                    linewidth=2.8
+
                 )
 
-                plt.title(
-                    "Sales Over Time"
+
+                style_chart(
+                    ax
                 )
 
-                plt.xlabel(
+
+                ax.set_title(
+
+                    "Sales Over Time",
+
+                    fontsize=15,
+
+                    fontweight="bold",
+
+                    pad=16
+
+                )
+
+
+                ax.set_xlabel(
                     "Month"
                 )
 
-                plt.ylabel(
+                ax.set_ylabel(
                     "Sales"
                 )
 
-                plt.xticks(
+
+                ax.tick_params(
+                    axis="x",
                     rotation=45
                 )
 
-                plt.grid(
-                    True,
-                    alpha=0.3
+
+                # Rupee y-axis
+
+                ax.yaxis.set_major_formatter(
+
+                    plt.FuncFormatter(
+
+                        lambda x, pos:
+                        format_rupee(x)
+
+                    )
+
                 )
 
+
+                # Highlight highest month
+
+                max_index = (
+                    monthly.idxmax()
+                )
+
+                max_value = (
+                    monthly.max()
+                )
+
+
+                max_position = (
+                    list(
+                        monthly.index
+                    ).index(
+                        max_index
+                    )
+                )
+
+
+                ax.scatter(
+
+                    [max_position],
+
+                    [max_value],
+
+                    color=SUCCESS_COLOR,
+
+                    s=65,
+
+                    zorder=5
+
+                )
+
+
+                ax.annotate(
+
+                    format_rupee(
+                        max_value
+                    ),
+
+                    (
+                        max_position,
+                        max_value
+                    ),
+
+                    xytext=(
+                        0,
+                        12
+                    ),
+
+                    textcoords="offset points",
+
+                    ha="center",
+
+                    fontsize=9,
+
+                    fontweight="bold",
+
+                    color=TEXT_COLOR
+
+                )
+
+
                 plt.tight_layout()
+
 
                 filename = (
                     "time_series.png"
                 )
 
+
                 plt.savefig(
+
                     os.path.join(
+
                         CHART_FOLDER,
+
                         filename
+
                     ),
-                    bbox_inches="tight"
+
+                    dpi=150,
+
+                    bbox_inches="tight",
+
+                    facecolor=fig.get_facecolor()
+
                 )
 
+
                 plt.close()
+
 
                 charts.append({
 
@@ -754,11 +1003,13 @@ def generate_dashboard_charts(file_path):
 
                 })
 
+
     # ========================================================
     # CHART 2 — SALES BY CATEGORY
     # ========================================================
 
     category_col = None
+
 
     preferred_categories = [
 
@@ -780,13 +1031,19 @@ def generate_dashboard_charts(file_path):
 
     ]
 
-    for preferred in preferred_categories:
+
+    for preferred in (
+        preferred_categories
+    ):
 
         if preferred in categorical_columns:
 
-            category_col = preferred
+            category_col = (
+                preferred
+            )
 
             break
+
 
     if category_col is None:
 
@@ -796,79 +1053,190 @@ def generate_dashboard_charts(file_path):
                 categorical_columns[0]
             )
 
+
     if (
         category_col
-        and "Sales" in df.columns
+        and
+        "Sales" in df.columns
     ):
 
         temp = df.copy()
 
+
         temp["Sales"] = pd.to_numeric(
+
             temp["Sales"],
+
             errors="coerce"
+
         )
+
 
         temp = temp.dropna(
+
             subset=[
+
                 category_col,
+
                 "Sales"
+
             ]
+
         )
 
+
         grouped = (
+
             temp
-            .groupby(category_col)[
-                "Sales"
-            ]
+            .groupby(
+                category_col
+            )["Sales"]
             .sum()
             .sort_values(
                 ascending=False
             )
             .head(10)
+
         )
+
 
         if not grouped.empty:
 
-            plt.figure(
-                figsize=(9, 4.5)
+            fig, ax = plt.subplots(
+
+                figsize=(9, 4.8),
+
+                facecolor=BG_COLOR
+
             )
 
-            grouped.plot(
-                kind="bar"
+
+            bars = ax.bar(
+
+                grouped.index.astype(str),
+
+                grouped.values,
+
+                color=PRIMARY_COLOR,
+
+                width=0.62
+
             )
 
-            plt.title(
-                f"Sales by {category_col}"
+
+            style_chart(
+                ax
             )
 
-            plt.xlabel(
+
+            ax.set_title(
+
+                f"Sales by {category_col}",
+
+                fontsize=15,
+
+                fontweight="bold",
+
+                pad=16
+
+            )
+
+
+            ax.set_xlabel(
                 category_col
             )
 
-            plt.ylabel(
+            ax.set_ylabel(
                 "Sales"
             )
 
-            plt.xticks(
-                rotation=45,
-                ha="right"
+
+            ax.tick_params(
+
+                axis="x",
+
+                rotation=35
+
             )
 
+
+            ax.yaxis.set_major_formatter(
+
+                plt.FuncFormatter(
+
+                    lambda x, pos:
+                    format_rupee(x)
+
+                )
+
+            )
+
+
+            # Value labels
+
+            for bar, value in zip(
+
+                bars,
+
+                grouped.values
+
+            ):
+
+                ax.text(
+
+                    bar.get_x()
+                    +
+                    bar.get_width()
+                    / 2,
+
+                    bar.get_height(),
+
+                    format_rupee(
+                        value
+                    ),
+
+                    ha="center",
+
+                    va="bottom",
+
+                    fontsize=8,
+
+                    color=TEXT_COLOR,
+
+                    fontweight="bold"
+
+                )
+
+
             plt.tight_layout()
+
 
             filename = (
                 "category_chart.png"
             )
 
+
             plt.savefig(
+
                 os.path.join(
+
                     CHART_FOLDER,
+
                     filename
+
                 ),
-                bbox_inches="tight"
+
+                dpi=150,
+
+                bbox_inches="tight",
+
+                facecolor=fig.get_facecolor()
+
             )
 
+
             plt.close()
+
 
             charts.append({
 
@@ -880,6 +1248,7 @@ def generate_dashboard_charts(file_path):
 
             })
 
+
     # ========================================================
     # CHART 3 — CATEGORY DISTRIBUTION
     # ========================================================
@@ -887,54 +1256,139 @@ def generate_dashboard_charts(file_path):
     if category_col:
 
         counts = (
+
             df[category_col]
+
             .dropna()
+
             .value_counts()
+
             .head(10)
+
         )
+
 
         if not counts.empty:
 
-            plt.figure(
-                figsize=(9, 4.5)
+            fig, ax = plt.subplots(
+
+                figsize=(9, 4.8),
+
+                facecolor=BG_COLOR
+
             )
 
-            counts.plot(
-                kind="bar"
+
+            bars = ax.bar(
+
+                counts.index.astype(str),
+
+                counts.values,
+
+                color=SECONDARY_COLOR,
+
+                width=0.62
+
             )
 
-            plt.title(
-                f"{category_col} Distribution"
+
+            style_chart(
+                ax
             )
 
-            plt.xlabel(
+
+            ax.set_title(
+
+                f"{category_col} Distribution",
+
+                fontsize=15,
+
+                fontweight="bold",
+
+                pad=16
+
+            )
+
+
+            ax.set_xlabel(
                 category_col
             )
 
-            plt.ylabel(
+            ax.set_ylabel(
                 "Count"
             )
 
-            plt.xticks(
-                rotation=45,
-                ha="right"
+
+            ax.tick_params(
+
+                axis="x",
+
+                rotation=35
+
             )
 
+
+            for bar, value in zip(
+
+                bars,
+
+                counts.values
+
+            ):
+
+                ax.text(
+
+                    bar.get_x()
+                    +
+                    bar.get_width()
+                    / 2,
+
+                    bar.get_height(),
+
+                    str(int(value)),
+
+                    ha="center",
+
+                    va="bottom",
+
+                    fontsize=9,
+
+                    color=TEXT_COLOR,
+
+                    fontweight="bold"
+
+                )
+
+
             plt.tight_layout()
+
 
             filename = (
                 "distribution_chart.png"
             )
 
+
             plt.savefig(
+
                 os.path.join(
+
                     CHART_FOLDER,
+
                     filename
+
                 ),
-                bbox_inches="tight"
+
+                dpi=150,
+
+                bbox_inches="tight",
+
+                facecolor=fig.get_facecolor()
+
             )
 
+
             plt.close()
+
 
             charts.append({
 
@@ -946,6 +1400,7 @@ def generate_dashboard_charts(file_path):
 
             })
 
+
     # ========================================================
     # CHART 4 — SALES DISTRIBUTION
     # ========================================================
@@ -953,51 +1408,116 @@ def generate_dashboard_charts(file_path):
     if "Sales" in df.columns:
 
         values = (
+
             pd.to_numeric(
+
                 df["Sales"],
+
                 errors="coerce"
+
             )
+
             .dropna()
+
         )
+
 
         if not values.empty:
 
-            plt.figure(
-                figsize=(9, 4.5)
+            fig, ax = plt.subplots(
+
+                figsize=(9, 4.8),
+
+                facecolor=BG_COLOR
+
             )
 
-            values.plot(
-                kind="hist",
-                bins=20
+
+            ax.hist(
+
+                values,
+
+                bins=12,
+
+                color=SUCCESS_COLOR,
+
+                edgecolor=BG_COLOR,
+
+                linewidth=1.2,
+
+                alpha=0.9
+
             )
 
-            plt.title(
-                "Sales Distribution"
+
+            style_chart(
+                ax
             )
 
-            plt.xlabel(
+
+            ax.set_title(
+
+                "Sales Distribution",
+
+                fontsize=15,
+
+                fontweight="bold",
+
+                pad=16
+
+            )
+
+
+            ax.set_xlabel(
                 "Sales"
             )
 
-            plt.ylabel(
+            ax.set_ylabel(
                 "Frequency"
             )
 
+
+            ax.xaxis.set_major_formatter(
+
+                plt.FuncFormatter(
+
+                    lambda x, pos:
+                    format_rupee(x)
+
+                )
+
+            )
+
+
             plt.tight_layout()
+
 
             filename = (
                 "numeric_distribution.png"
             )
 
+
             plt.savefig(
+
                 os.path.join(
+
                     CHART_FOLDER,
+
                     filename
+
                 ),
-                bbox_inches="tight"
+
+                dpi=150,
+
+                bbox_inches="tight",
+
+                facecolor=fig.get_facecolor()
+
             )
 
+
             plt.close()
+
 
             charts.append({
 
@@ -1008,5 +1528,10 @@ def generate_dashboard_charts(file_path):
                     filename
 
             })
+
+
+    # ========================================================
+    # RETURN CHART INFORMATION
+    # ========================================================
 
     return charts

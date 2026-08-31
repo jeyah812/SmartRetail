@@ -10,94 +10,261 @@
 
     <title>SmartRetail</title>
 
+
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
-          rel="stylesheet">
     <link
-          rel="stylesheet"
-          href="https://unpkg.com/aos@2.3.4/dist/aos.css"/>
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+
+    <!-- AOS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+
 
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 
     <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
     <link rel="preconnect"
           href="https://fonts.gstatic.com"
           crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
-    <!-- CSS -->
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- SmartRetail CSS -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
 
 </head>
 
+
 <body>
+
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
 
 <nav class="navbar navbar-expand-lg">
 
     <div class="container">
 
-        <a class="navbar-brand fw-bold text-primary" href="{{ url_for('home') }}">
+
+        <!-- BRAND -->
+
+        <a
+            class="navbar-brand fw-bold text-primary"
+            href="{{ url_for('home') }}">
+
             <i class="bi bi-shop"></i>
+
             SmartRetail
+
         </a>
 
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarNav">
+
+        <!-- MOBILE BUTTON -->
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
 
             <span class="navbar-toggler-icon"></span>
 
         </button>
 
-        <div class="collapse navbar-collapse"
-             id="navbarNav">
 
-            <ul class="navbar-nav ms-auto">
+        <!-- NAVIGATION -->
+
+        <div
+            class="collapse navbar-collapse"
+            id="navbarNav">
+
+
+            <ul class="navbar-nav ms-auto align-items-center">
+
+
+                <!-- HOME -->
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+
+                    <a
+                        class="nav-link"
+                        href="{{ url_for('home') }}">
+
+                        Home
+
+                    </a>
+
                 </li>
+
+
+                <!-- OWNER -->
 
                 {% if session.get('role') == 'owner' %}
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('owner') }}">Owner Dashboard</a>
-                </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('prediction') }}">Prediction</a>
-                </li>
+                    <li class="nav-item">
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('inventory') }}">Inventory</a>
-                </li>
+                        <a
+                            class="nav-link"
+                            href="{{ url_for('owner') }}">
+
+                            Owner Dashboard
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="{{ url_for('prediction') }}">
+
+                            Prediction
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="{{ url_for('inventory') }}">
+
+                            Inventory
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="{{ url_for('sustainability') }}">
+
+                            <i class="bi bi-leaf"></i>
+
+                            Sustainability
+
+                        </a>
+
+                    </li>
+
+
+                <!-- INVENTORY MANAGER -->
 
                 {% elif session.get('role') == 'inventory_manager' %}
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('inventory') }}">Inventory</a>
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="{{ url_for('inventory') }}">
+
+                            Inventory
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="{{ url_for('sustainability') }}">
+
+                            <i class="bi bi-leaf"></i>
+
+                            Sustainability
+
+                        </a>
+
+                    </li>
+
+
+                {% endif %}
+
+
+                <!-- =================================================
+                     AI ASSISTANT BUTTON
+                     ================================================= -->
+
+                {% if session.get('role') %}
+
+                <li class="nav-item ms-2">
+
+                    <button
+                        id="chatbot-toggle"
+                        class="ai-nav-button"
+                        type="button">
+
+                        <i class="bi bi-robot"></i>
+
+                        <span>AI Assistant</span>
+
+                    </button>
+
                 </li>
 
                 {% endif %}
 
+
+                <!-- LOGIN / LOGOUT -->
+
                 <li class="nav-item">
+
+
                     {% if session.get('role') %}
-                    <a class="btn btn-login ms-3" href="{{ url_for('logout') }}">
+
+                    <a
+                        class="btn btn-login ms-3"
+                        href="{{ url_for('logout') }}">
+
                         Logout
+
                     </a>
+
                     {% else %}
-                    <a class="btn btn-login ms-3" href="{{ url_for('login') }}">
+
+                    <a
+                        class="btn btn-login ms-3"
+                        href="{{ url_for('login') }}">
+
                         Login
+
                     </a>
+
                     {% endif %}
+
+
                 </li>
+
 
             </ul>
 
@@ -107,20 +274,220 @@
 
 </nav>
 
+
+
+<!-- ============================================================
+     CHATBOT
+     ============================================================ -->
+
+{% if session.get('role') %}
+
+<div id="chatbot-window">
+
+
+    <!-- HEADER -->
+
+    <div class="chatbot-header">
+
+
+        <div class="chatbot-title">
+
+
+            <div class="chatbot-icon">
+
+                <i class="bi bi-robot"></i>
+
+            </div>
+
+
+            <div>
+
+                <h6>
+                    SmartRetail AI
+                </h6>
+
+                <span>
+
+                    <span class="status-dot"></span>
+
+                    Online
+
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <button
+            id="chatbot-close"
+            type="button">
+
+            <i class="bi bi-x-lg"></i>
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- MESSAGES -->
+
+    <div id="chatbot-messages">
+
+
+        <div class="chat-message bot-message">
+
+
+            <div class="message-avatar">
+
+                <i class="bi bi-robot"></i>
+
+            </div>
+
+
+            <div class="message-bubble">
+
+                Hi! 👋 I'm
+                <strong>SmartRetail AI</strong>.
+
+                <br><br>
+
+                I can help you with:
+
+                <br>
+
+                📊 Sales analytics
+
+                <br>
+
+                📦 Inventory
+
+                <br>
+
+                💰 Profit
+
+                <br>
+
+                📈 Product performance
+
+                <br>
+
+                🌱 Sustainability
+
+                <br><br>
+
+                Ask me anything about your retail data!
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- TYPING -->
+
+    <div id="chatbot-typing">
+
+        <span></span>
+
+        <span></span>
+
+        <span></span>
+
+    </div>
+
+
+
+    <!-- INPUT -->
+
+    <div class="chatbot-input-area">
+
+
+        <input
+            type="text"
+            id="chatbot-input"
+            placeholder="Ask SmartRetail AI..."
+            autocomplete="off">
+
+
+        <button
+            id="chatbot-send"
+            type="button">
+
+            <i class="bi bi-send-fill"></i>
+
+        </button>
+
+
+    </div>
+
+
+</div>
+
+{% endif %}
+
+
+
+<!-- ============================================================
+     PAGE CONTENT
+     ============================================================ -->
+
 {% block content %}
+
 {% endblock %}
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+<script
+    src="https://unpkg.com/aos@2.3.4/dist/aos.js">
+</script>
+
 
 <script>
+
 AOS.init({
-    duration:1000,
-    once:true
+
+    duration: 1000,
+
+    once: true
+
 });
+
 </script>
-<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script
+    src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js">
+</script>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/chart.js">
+</script>
+
+
+<!-- SMARTRETAIL CHATBOT -->
+
+<script
+    src="{{ url_for('static', filename='js/chatbot.js') }}">
+</script>
+
 
 </body>
 
