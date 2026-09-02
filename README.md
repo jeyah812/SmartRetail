@@ -1,194 +1,137 @@
-# 🛒 SmartRetail
-## A Data-Driven Decision Support System for Sustainable Retail Operations
+# SmartRetail 🛒
 
-SmartRetail is a web-based **retail analytics and intelligent decision support system** designed to help retail businesses analyze sales performance, monitor inventory, predict profit, and make data-driven operational decisions.
+### A Data-Driven Decision Support System for Sustainable Retail Operations
 
-The system combines **Business Intelligence, Machine Learning, Inventory Analytics, Rule-Based Recommendations, AI Assistance, and Sustainability Indicators** into a unified retail management platform.
+SmartRetail is a web-based retail analytics and decision support system that helps businesses understand sales performance, monitor inventory, predict profit, and make data-driven decisions.
 
----
-
-## 🎯 Project Objective
-
-Traditional retail systems primarily record transactions but provide limited support for analyzing business performance and making intelligent decisions.
-
-SmartRetail addresses this problem by transforming raw retail transaction data into:
-
-- 📊 Business intelligence dashboards
-- 📈 Sales and profit analytics
-- 🤖 Machine learning-based profit prediction
-- 📦 Inventory monitoring and reorder alerts
-- 💡 Intelligent business recommendations
-- 🌱 Sustainability indicators
-- 💬 AI-assisted retail data interaction
-
-The primary goal is to help retail stakeholders understand current business performance and use predictive insights to support better decisions.
+The system combines **Business Intelligence, Machine Learning, Inventory Analytics, Recommendation Systems, AI Assistance, and Sustainability Indicators** into a single platform.
 
 ---
 
-## ✨ Key Features
+## ✨ Features
 
-### 📊 Sales & Business Analytics
-
-SmartRetail provides dynamic analytics based on the active retail dataset.
-
-Features include:
-
-- Total Sales
-- Total Profit
-- Total Quantity
-- Profit Margin
-- Average Sale
-- Average Discount
-- Records Analyzed
-- Sales by Category
-- Profit by Category
-- Sales Trends
-- Profit Trends
-- Product Performance
-- Category Distribution
-- Sales Distribution
-
-All major analytics are generated dynamically from the currently active dataset.
-
----
+### 📊 Sales Analytics
+- Total sales and profit analysis
+- Profit margin calculation
+- Average sales and discount analysis
+- Sales and profit trends
+- Category-wise sales and profit
+- Product performance analysis
+- Dynamic charts generated from the active dataset
 
 ### 🤖 Profit Prediction
+- Machine learning-based profit prediction
+- Actual vs predicted profit comparison
+- Category-level prediction analysis
+- Prediction variance and error calculation
 
-SmartRetail uses Machine Learning to predict retail profit.
-
-The system supports:
+### 🧠 Machine Learning Models
+SmartRetail evaluates multiple regression models:
 
 - Linear Regression
 - Decision Tree Regressor
 - Random Forest Regressor
 
-The prediction system uses retail features such as:
-
-- Sales
-- Quantity
-- Discount
-- Category
-- Sub-Category
-- Region
-- Segment
-- Shipping Days
-- Order Year
-- Order Quarter
-
-The system evaluates model performance using:
+Model performance is evaluated using:
 
 - R² Score
 - Mean Absolute Error (MAE)
 - Mean Squared Error (MSE)
 - Root Mean Squared Error (RMSE)
 
-The best-performing model is selected for profit prediction.
-
----
-
-### 📈 Actual vs Predicted Profit Analysis
-
-After prediction, SmartRetail provides a comparison between:
-
-- Actual Profit
-- Predicted Profit
-- Prediction Variance
-- Error Percentage
-
-The system also generates a category-level comparison visualization showing actual profit against predicted profit.
-
----
+The best-performing model is selected for prediction.
 
 ### 📦 Inventory Management
-
-SmartRetail provides inventory monitoring features including:
-
 - Product tracking
-- Current stock monitoring
+- Stock-level monitoring
 - Reorder levels
-- Low-stock detection
+- Low-stock alerts
 - Critical-stock alerts
 - Product category distribution
-- Product addition
-- Supplier information
-- Unit price tracking
-- Last updated information
+- Add and manage products
+- Supplier and pricing information
 
-The inventory dashboard helps identify products requiring immediate attention.
-
----
-
-### 💡 Intelligent Recommendations
-
-SmartRetail generates business recommendations based on retail performance data.
-
-Recommendations can address:
+### 💡 Recommendations
+The system generates actionable recommendations based on retail performance, including:
 
 - Sales performance
 - Profitability
-- Discounts
 - Inventory conditions
+- Discount patterns
 - Product performance
-- Operational improvements
-
-The recommendation engine converts analytical results into actionable business suggestions.
-
----
 
 ### 💬 SmartRetail AI Assistant
-
-The system includes an AI-style retail assistant that allows users to interact with their retail information.
-
-It can assist with queries related to:
+An integrated assistant helps users interact with retail information and provides insights related to:
 
 - Sales
 - Profit
 - Inventory
 - Product performance
 - Sustainability
-- Business insights
 
-This provides a conversational interface for accessing important retail information.
+### 🌱 Sustainability
+SmartRetail incorporates sustainability indicators related to:
 
----
+- **SDG 8** – Decent Work and Economic Growth
+- **SDG 9** – Industry, Innovation and Infrastructure
+- **SDG 12** – Responsible Consumption and Production
 
-### 🌱 Sustainability Support
-
-SmartRetail incorporates sustainability-oriented indicators to support responsible retail operations.
-
-The system provides indicators related to:
-
-- SDG 8 – Decent Work and Economic Growth
-- SDG 9 – Industry, Innovation and Infrastructure
-- SDG 12 – Responsible Consumption and Production
-
-The system particularly supports **SDG 12** by using inventory monitoring, sales analysis, and decision support to help reduce inventory imbalance and improve resource utilization.
+The system primarily supports SDG 12 through inventory monitoring and data-driven resource management.
 
 ---
 
-## 🧠 Machine Learning Workflow
+## 🛠️ Tech Stack
 
-The prediction workflow follows these steps:
+| Area | Technologies |
+|---|---|
+| Frontend | HTML, CSS, Bootstrap, JavaScript |
+| Backend | Python, Flask |
+| Data Processing | Pandas, NumPy |
+| Machine Learning | Scikit-learn |
+| Visualization | Matplotlib, Plotly |
+| Database | SQLite |
+| Model Storage | Joblib |
+| Data Storage | CSV, JSON |
+
+---
+
+## 📂 Project Structure
 
 ```text
-Retail Dataset
-      ↓
-Dataset Validation
-      ↓
-Data Preprocessing
-      ↓
-Feature Engineering
-      ↓
-Feature Selection
-      ↓
-Train ML Models
-      ↓
-Evaluate Models
-      ↓
-Select Best Model
-      ↓
-Predict Profit
-      ↓
-Compare Actual vs Predicted
-      ↓
-Generate Business Insights
+SmartRetail/
+│
+├── app.py
+│
+├── data/
+│   ├── raw/
+│   └── processed/
+│
+├── database/
+│
+├── docs/
+│
+├── models/
+│   ├── best_model.pkl
+│   ├── encoders.pkl
+│   └── model_metrics.json
+│
+├── reports/
+├── presentation/
+│
+├── src/
+│   ├── preprocessing.py
+│   ├── feature_engineering.py
+│   ├── eda.py
+│   ├── prediction.py
+│   ├── recommendation.py
+│   ├── dashboard.py
+│   └── utils.py
+│
+├── static/
+│   ├── images/
+│   └── uploads/
+│
+├── templates/
+│
+├── requirements.txt
+└── README.md
