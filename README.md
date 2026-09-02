@@ -1,83 +1,194 @@
-# SmartRetail - AI-Powered Retail Analytics & Decision Support Platform
+# 🛒 SmartRetail
+## A Data-Driven Decision Support System for Sustainable Retail Operations
 
-SmartRetail is an intelligent retail decision-support platform designed to help retail managers and store owners analyze sales performance, evaluate profit predictions against actual financial results, optimize inventory stock levels, and monitor sustainability metrics aligned with UN Sustainable Development Goals (SDGs).
+SmartRetail is a web-based **retail analytics and intelligent decision support system** designed to help retail businesses analyze sales performance, monitor inventory, predict profit, and make data-driven operational decisions.
 
----
-
-## 🌟 Key Features
-
-1. **Owner Analytics Dashboard**: Comprehensive KPI cards (Total Sales, Total Profit, Profit Margin, Average Order Value, Average Discount) with dynamic charts.
-2. **Actual Profit vs. Predicted Profit Comparison**: Side-by-side financial metric comparison, deviation percentage, MAE/RMSE model metrics, and monthly comparison visualization.
-3. **Derived Inventory Insights**: Stock health indicators, turnover rates, estimated days of supply, reorder alerts, and overstock warnings computed directly from sales patterns.
-4. **Sustainability Dashboard (SDG Alignment)**: Environmental impact metrics (Estimated CO₂ emissions, shipping mode emissions, packaging waste, return rate, SDG 8, 9, 12, 13 tracking).
-5. **Smart AI Business Advisor**: Integrated Groq LLM assistant providing tailored tactical advice across sales, inventory, and profitability.
+The system combines **Business Intelligence, Machine Learning, Inventory Analytics, Rule-Based Recommendations, AI Assistance, and Sustainability Indicators** into a unified retail management platform.
 
 ---
 
-## 🏗 System Architecture
+## 🎯 Project Objective
 
-```
-SmartRetail/
-├── app.py                 # Flask web application routes & controllers
-├── config.py              # Application settings & environment configuration
-├── advisor.py             # Groq LLM API client integration
-├── requirements.txt       # Project Python dependencies
-├── data/                  # Raw and processed CSV datasets
-├── models/                # Trained ML models, encoders, and performance metrics
-├── src/
-│   ├── dashboard.py       # KPI statistics, dynamic chart generation, sustainability & inventory
-│   ├── predict.py         # Model loading, feature preprocessing & profit prediction comparison
-│   ├── validator.py       # CSV dataset structure validation
-│   ├── feature_engineering.py # Date, shipping, and sales feature extraction
-│   └── recommendation.py  # Rule-based business recommendation engine
-├── templates/             # Jinja2 HTML templates
-└── static/                # CSS stylesheets, static images, generated charts, and uploads
-```
+Traditional retail systems primarily record transactions but provide limited support for analyzing business performance and making intelligent decisions.
+
+SmartRetail addresses this problem by transforming raw retail transaction data into:
+
+- 📊 Business intelligence dashboards
+- 📈 Sales and profit analytics
+- 🤖 Machine learning-based profit prediction
+- 📦 Inventory monitoring and reorder alerts
+- 💡 Intelligent business recommendations
+- 🌱 Sustainability indicators
+- 💬 AI-assisted retail data interaction
+
+The primary goal is to help retail stakeholders understand current business performance and use predictive insights to support better decisions.
 
 ---
 
-## 🚀 Getting Started
+## ✨ Key Features
 
-### Prerequisites
-- Python 3.9+
-- pip package manager
+### 📊 Sales & Business Analytics
 
-### Installation
+SmartRetail provides dynamic analytics based on the active retail dataset.
 
-1. **Clone the repository**:
-   ```bash
-   git clone <repository-url>
-   cd SmartRetail
-   ```
+Features include:
 
-2. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+- Total Sales
+- Total Profit
+- Total Quantity
+- Profit Margin
+- Average Sale
+- Average Discount
+- Records Analyzed
+- Sales by Category
+- Profit by Category
+- Sales Trends
+- Profit Trends
+- Product Performance
+- Category Distribution
+- Sales Distribution
 
-3. **Configure Environment Variables**:
-   Create a `.env` file in the root directory:
-   ```env
-   GROQ_API_KEY=your_groq_api_key_here
-   SECRET_KEY=smartretail-secret-key
-   ```
-
-4. **Train Machine Learning Model (Optional)**:
-   ```bash
-   python src/train_model.py
-   ```
-
-5. **Run the Application**:
-   ```bash
-   python app.py
-   ```
-   Open `http://127.0.0.1:5000` in your web browser.
+All major analytics are generated dynamically from the currently active dataset.
 
 ---
 
-## 📊 SDG Alignment
+### 🤖 Profit Prediction
 
-- **SDG 8: Decent Work & Economic Growth**: Enhances retail productivity and profitability through data-driven operational decision-making.
-- **SDG 9: Industry, Innovation & Infrastructure**: Leverages predictive machine learning models to modernize small/medium enterprise retail infrastructure.
-- **SDG 12: Responsible Consumption & Production**: Identifies overstocked items and reduces product waste through sales-derived inventory turnover analytics.
-- **SDG 13: Climate Action**: Tracks logistics CO₂ footprint and promotes eco-friendly shipping modes.
+SmartRetail uses Machine Learning to predict retail profit.
+
+The system supports:
+
+- Linear Regression
+- Decision Tree Regressor
+- Random Forest Regressor
+
+The prediction system uses retail features such as:
+
+- Sales
+- Quantity
+- Discount
+- Category
+- Sub-Category
+- Region
+- Segment
+- Shipping Days
+- Order Year
+- Order Quarter
+
+The system evaluates model performance using:
+
+- R² Score
+- Mean Absolute Error (MAE)
+- Mean Squared Error (MSE)
+- Root Mean Squared Error (RMSE)
+
+The best-performing model is selected for profit prediction.
+
+---
+
+### 📈 Actual vs Predicted Profit Analysis
+
+After prediction, SmartRetail provides a comparison between:
+
+- Actual Profit
+- Predicted Profit
+- Prediction Variance
+- Error Percentage
+
+The system also generates a category-level comparison visualization showing actual profit against predicted profit.
+
+---
+
+### 📦 Inventory Management
+
+SmartRetail provides inventory monitoring features including:
+
+- Product tracking
+- Current stock monitoring
+- Reorder levels
+- Low-stock detection
+- Critical-stock alerts
+- Product category distribution
+- Product addition
+- Supplier information
+- Unit price tracking
+- Last updated information
+
+The inventory dashboard helps identify products requiring immediate attention.
+
+---
+
+### 💡 Intelligent Recommendations
+
+SmartRetail generates business recommendations based on retail performance data.
+
+Recommendations can address:
+
+- Sales performance
+- Profitability
+- Discounts
+- Inventory conditions
+- Product performance
+- Operational improvements
+
+The recommendation engine converts analytical results into actionable business suggestions.
+
+---
+
+### 💬 SmartRetail AI Assistant
+
+The system includes an AI-style retail assistant that allows users to interact with their retail information.
+
+It can assist with queries related to:
+
+- Sales
+- Profit
+- Inventory
+- Product performance
+- Sustainability
+- Business insights
+
+This provides a conversational interface for accessing important retail information.
+
+---
+
+### 🌱 Sustainability Support
+
+SmartRetail incorporates sustainability-oriented indicators to support responsible retail operations.
+
+The system provides indicators related to:
+
+- SDG 8 – Decent Work and Economic Growth
+- SDG 9 – Industry, Innovation and Infrastructure
+- SDG 12 – Responsible Consumption and Production
+
+The system particularly supports **SDG 12** by using inventory monitoring, sales analysis, and decision support to help reduce inventory imbalance and improve resource utilization.
+
+---
+
+## 🧠 Machine Learning Workflow
+
+The prediction workflow follows these steps:
+
+```text
+Retail Dataset
+      ↓
+Dataset Validation
+      ↓
+Data Preprocessing
+      ↓
+Feature Engineering
+      ↓
+Feature Selection
+      ↓
+Train ML Models
+      ↓
+Evaluate Models
+      ↓
+Select Best Model
+      ↓
+Predict Profit
+      ↓
+Compare Actual vs Predicted
+      ↓
+Generate Business Insights
